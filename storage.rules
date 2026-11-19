@@ -1,0 +1,9 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // All uploads, decoding, and reads use authenticated server routes.
+    // Direct SDK uploads are denied to prevent auto-generated public download
+    // tokens. Server-created objects never have those tokens.
+    match /{allPaths=**} { allow read, write: if false; }
+  }
+}

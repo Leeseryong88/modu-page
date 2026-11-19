@@ -1,0 +1,42 @@
+{
+  "mode": "Built-in image_gen",
+  "date": "2026-11-19",
+  "assets": [
+    {
+      "name": "cafe",
+      "prompt": "Use case: photorealistic-natural. Asset type: real-feeling homepage photograph for a clearly labelled fictional cafe business example on a Korean small-business website builder. A welcoming independent Korean neighborhood cafe, a small walnut counter with an espresso machine, fresh croissants under a simple glass cover, a few wooden tables and woven chairs, large daylight window and green street trees visible, warm cream walls and subtle burgundy details. View from the entrance at table height, editorial architectural photograph, inviting and achievable small shop, not a luxury restaurant. Landscape 3:2 composition, realistic material details and natural perspective, 35mm lens, straight architecture, restrained contrast and authentic color. The photo must make the type of small business immediately recognizable. No text, no letters, no signage, no logos, no watermarks, no UI, no montage, no artificial CGI appearance. This is an illustrative fictional business, not a real customer.",
+      "source": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f241-9aab-74f3-b426-05d39028e203\\exec-86c5ab11-ea72-4dda-8788-c29abcf58a47.png",
+      "output": "public/images/examples/cafe.webp"
+    },
+    {
+      "name": "florist",
+      "prompt": "Use case: photorealistic-natural. Asset type: real-feeling homepage photograph for a clearly labelled fictional florist business example on a Korean small-business website builder. A beautiful small Korean neighborhood flower shop. A tactile wooden florist workbench surrounded by casually gathered coral dahlias, pale peach roses, white cosmos and airy green stems in galvanized buckets, folded kraft wrapping paper and one tied bouquet. Bright natural window light, fresh leafy atmosphere, hand-crafted and personal, rich natural green and peach palette, realistic botanical photography, not a sterile showroom. Landscape 3:2 composition, realistic material details and natural perspective, 35mm lens, straight architecture, restrained contrast and authentic color. The photo must make the type of small business immediately recognizable. No text, no letters, no signage, no logos, no watermarks, no UI, no montage, no artificial CGI appearance. This is an illustrative fictional business, not a real customer.",
+      "source": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f241-9aab-74f3-b426-05d39028e203\\exec-cbccda95-9928-486f-9936-e20ec1a374fd.png",
+      "output": "public/images/examples/florist.webp"
+    },
+    {
+      "name": "moving",
+      "prompt": "Use case: photorealistic-natural. Asset type: real-feeling homepage photograph for a clearly labelled fictional moving business example on a Korean small-business website builder. Two professional Korean movers in plain deep blue work shirts and work trousers, seen from the back and side at a natural distance, carefully loading sealed plain cardboard boxes into a modest white moving van on a quiet Korean residential street. One mover uses a practical hand trolley correctly. A clean organized trustworthy small local moving business, soft bright morning daylight, documentary commercial photography. Van doors open, boxes believable scale, simple green trees and low residential buildings behind. Landscape 3:2 composition, realistic material details and natural perspective, 35mm lens, straight architecture, restrained contrast and authentic color. The photo must make the type of small business immediately recognizable. No text, no letters, no signage, no logos, no watermarks, no UI, no montage, no artificial CGI appearance. This is an illustrative fictional business, not a real customer.",
+      "source": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f241-9aab-74f3-b426-05d39028e203\\exec-b6ee7363-6012-44e2-a0e4-ae8e01c034cb.png",
+      "output": "public/images/examples/moving.webp"
+    },
+    {
+      "name": "cafe-detail",
+      "prompt": "Use case: photorealistic-natural. Asset type: supporting photograph for a clearly labelled fictional small-business example website. A ceramic cup of flat white with imperfect natural latte art on a small walnut cafe table next to a buttery croissant on a cream ceramic plate, softly out of focus burgundy curtain and window greenery in the background. Tight eye-level three-quarter composition, believable neighborhood cafe menu photography. Landscape 3:2, natural window light, true-to-life materials, authentic editorial photography, no text, logos, watermark, UI, split panels, artificial CGI, or people. This is an illustrative example, not a real customer project.",
+      "source": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f241-9aab-74f3-b426-05d39028e203\\exec-f81f1651-b0fb-4e06-97d7-67e4cf6ac95a.png",
+      "output": "public/images/examples/cafe-detail.webp"
+    },
+    {
+      "name": "florist-detail",
+      "prompt": "Use case: photorealistic-natural. Asset type: supporting photograph for a clearly labelled fictional small-business example website. One hand-tied bouquet of peach roses, coral dahlias and delicate white cosmos with green foliage wrapped loosely in brown kraft paper and cotton ribbon, resting on the corner of a florist's wooden workbench, soft green flower-shop bokeh. Tactile natural petals, fine botanical detail and fresh color. Landscape 3:2, natural window light, true-to-life materials, authentic editorial photography, no text, logos, watermark, UI, split panels, artificial CGI, or people. This is an illustrative example, not a real customer project.",
+      "source": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f241-9aab-74f3-b426-05d39028e203\\exec-e79f8f45-e8b2-4a2a-ac97-cd7ebcf32d39.png",
+      "output": "public/images/examples/florist-detail.webp"
+    },
+    {
+      "name": "moving-detail",
+      "prompt": "Use case: photorealistic-natural. Asset type: supporting photograph for a clearly labelled fictional small-business example website. An organized small apartment living room on moving day, a modest fabric armchair protected carefully with clean light-gray moving blankets and packing tape, plain closed cardboard boxes stacked safely and a practical hand trolley nearby, soft morning daylight through window, neutral white walls and wood floor. Documentary detail photograph showing careful protective packing, not an interior design advertisement. Landscape 3:2, natural window light, true-to-life materials, authentic editorial photography, no text, logos, watermark, UI, split panels, artificial CGI, or people. This is an illustrative example, not a real customer project.",
+      "source": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f241-9aab-74f3-b426-05d39028e203\\exec-6972a65a-0a5f-4020-bd7b-8cfaeb10c21c.png",
+      "output": "public/images/examples/moving-detail.webp"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+export const localEnv = {
+  ...process.env,
+  NEXT_PUBLIC_FIREBASE_API_KEY: "demo-key",
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: "demo-woori.firebaseapp.com",
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID: "demo-woori",
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: "demo-woori.appspot.com",
+  NEXT_PUBLIC_FIREBASE_APP_ID: "1:123456:web:demo",
+  NEXT_PUBLIC_SITE_URL: `http://127.0.0.1:${process.env.LOCAL_APP_PORT || "3000"}`,
+  NEXT_PUBLIC_USE_FIREBASE_EMULATORS: "true",
+  FIREBASE_PROJECT_ID: "demo-woori",
+  FIREBASE_STORAGE_BUCKET: "demo-woori.appspot.com",
+  FIREBASE_AUTH_EMULATOR_HOST: "127.0.0.1:9099",
+  FIRESTORE_EMULATOR_HOST: "127.0.0.1:8080",
+  FIREBASE_STORAGE_EMULATOR_HOST: "127.0.0.1:9199",
+  INQUIRY_RATE_LIMIT_SECRET: "local-emulator-inquiries-only-secret-2026",
+};

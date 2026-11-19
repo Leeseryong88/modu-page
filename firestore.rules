@@ -1,0 +1,17 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Account details and drafts are never mixed into public snapshots.
+    match /sites/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false; // Validated server transactions only.
+      match /media/{id} { allow read: if request.auth != null && request.auth.uid == uid; allow write: if false; }
+    }
+    match /publicSites/{slug} { allow read: if true; allow write: if false; }
+    match /slugs/{slug} { allow read, write: if false; }
+    // Private inquiries and aggregate counts are served only through owner-authenticated APIs.
+    match /inboxes/{uid} { allow read, write: if false; match /messages/{id} { allow read, write: if false; } }
+    match /inquiryLimits/{id} { allow read, write: if false; }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

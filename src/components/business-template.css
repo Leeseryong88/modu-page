@@ -1,0 +1,55 @@
+/* Large photographs and quiet typography, informed by the supplied portfolio reference.
+   Text stays outside photographs; the same styles are used in all previews. */
+.business-site{font-weight:400;color:#31352f}
+.business-header{background:#fffffffa;border-bottom-color:#eceee8}
+.business-brand{font-size:21px;font-weight:550;letter-spacing:-.07em}
+.business-brand img{max-width:115px}
+.business-desktop-nav{gap:28px;color:#6c7468;font-size:14px}
+.business-desktop-nav .business-button{background:transparent;color:var(--accent);border-color:#d1d8cf;border-radius:0;padding-inline:17px;min-height:42px;font-weight:400}
+.business-hero h1{font-weight:500;letter-spacing:-.075em;line-height:1.35}
+.business-label{font-weight:400;letter-spacing:-.015em;color:#68745e}
+.business-tagline{font-weight:400;line-height:1.8;color:#626c5b}
+.business-hero-image{border-radius:0;background:#f2f3ec}
+.business-button{border-radius:0;font-weight:450;min-height:50px;padding-inline:23px}
+.business-button.secondary{border-color:#c1cbb9}
+.section-kicker{font-size:14px;font-weight:400;letter-spacing:.14em;color:#68745e}
+.business-section h2,.business-contact h2{font-weight:450;letter-spacing:-.06em}
+.business-about>.preserve-lines{font-weight:400;line-height:2.05;color:#626c5b}
+.business-services article{border-top:1px solid #d4dccd;padding-top:22px}
+.service-number{font-size:14px;color:#68745e}
+.business-services h3{font-size:22px;font-weight:450;letter-spacing:-.05em;margin:14px 0}
+.business-services p,.business-projects p{font-weight:400;color:#626c5b;font-size:16px}
+.business-projects{gap:38px 28px}
+.project-photo{border-radius:0}
+.project-photo>span{opacity:0;transition:opacity .15s;border-radius:0;font-size:13px;background:#ffffffed;padding:8px 12px}
+.project-photo:hover>span,.project-photo:focus-visible>span{opacity:1}
+.business-projects h3{font-size:21px;font-weight:450;letter-spacing:-.05em}
+.business-contact{background:var(--accent-soft)}
+.business-contact h2{font-weight:450;line-height:1.55}
+.business-contact-action h3{font-weight:450;letter-spacing:-.04em}
+.business-contact-action p,.contact-intro{color:#626c5b;font-weight:400}
+.business-contact dl{font-size:15px;line-height:1.8}
+.business-contact dt{color:#68745e}.business-contact dd{color:#5a6652}
+.business-footer{font-size:14px;color:#68745e}.business-footer strong{font-weight:500;color:#737e68}
+@container business (min-width:700px){
+  .business-hero{grid-template-columns:42fr 58fr;gap:44px;padding-block:48px 66px}
+  .business-hero h1{font-size:44px}.business-tagline{font-size:20px;margin:22px 0 29px}.business-hero-image{aspect-ratio:4/3}
+  .business-section{padding-block:68px}
+  .business-about{display:grid;grid-template-columns:32fr 68fr;column-gap:40px}
+  .business-about>.section-kicker{grid-column:1;grid-row:1;margin:5px 0 10px}
+  .business-about>h2{grid-column:1;grid-row:2;margin-bottom:0}
+  .business-about>.preserve-lines{grid-column:2;grid-row:1 / span 2;max-width:720px}
+  .business-services article{border-top:0;border-left:1px solid #dce2d5;padding:0 0 0 25px}
+  .business-services article:first-child{border-left:0;padding-left:0}
+  .business-projects:has(article:only-child){grid-template-columns:minmax(0,780px)}
+  .business-contact{padding-block:72px}.business-contact-action{padding-left:48px;border-color:#c7d0c0}
+}
+@container business (min-width:1000px){
+  .business-hero{gap:60px;padding-block:58px 78px}.business-hero h1{font-size:50px}.business-label{font-size:14px}
+  .business-section{padding-block:80px}.business-section h2{font-size:34px}.business-contact h2{font-size:38px}
+  .business-hero-image{min-height:450px}.business-contact{padding-block:82px}
+}
+@container business (max-width:699px){.business-hero{padding-block:34px 43px;gap:28px}.business-hero h1{font-size:32px}.business-tagline{font-size:18px;margin:17px 0 23px}.business-section{padding-block:43px}.business-section h2{font-size:27px;margin-bottom:24px}.business-projects h3{font-size:20px}.project-photo>span{opacity:1;font-size:14px}.business-contact h2{font-size:28px}.business-contact{padding-block:42px}.business-button{font-size:14px}.business-about>.preserve-lines{font-size:16px}}
+.business-footer>a,.business-footer>.text-link{font-size:14px}
+.business-desktop-nav .business-button{min-height:44px;font-size:14px}
+.project-photo>span{font-size:14px}

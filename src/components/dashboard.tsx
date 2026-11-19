@@ -1,0 +1,31 @@
+"use client";
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Copy, ExternalLink, Eye, ImageIcon, Pencil, Plus, Check } from "lucide-react";
+import { SITE_ORIGIN } from "@/lib/brand";
+import { formatDate } from "@/lib/utils";
+import { api } from "@/lib/api-client";
+import type { SiteRecord } from "@/lib/schema";
+import { useSite } from "@/hooks/use-site";
+import { useAuth } from "./auth-provider";
+import { SiteHeader } from "./site-header";
+import { DashboardNav } from "./dashboard-nav";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "./ui/dialog";
+import { mediaUrl } from "./business-template";
+export function Dashboard() {
+  const { site, setSite, loading, error, reload } = useSite(); const { user, logout } = useAuth(); const router = useRouter();
+  const [confirm, setConfirm] = useState(false); const [busy, setBusy] = useState(false); const [notice, setNotice] = useState(""); const [actionError, setActionError] = useState("");
+  async function unpublish() { if (!site) return; setBusy(true); setActionError(""); try { setSite(await api<SiteRecord>("/api/site/unpublish", { method: "POST", body: JSON.stringify({ revision: site.revision }) })); setConfirm(false); setNotice("홈페이지를 비공개로 전환했어요."); } catch (e) { setActionError((e as Error).message); } finally { setBusy(false); } }
+  async function copy() { try { await navigator.clipboard.writeText(`${SITE_ORIGIN}/${site?.slug}`); setNotice("주소를 복사했어요."); } catch { setActionError("복사하지 못했어요. 표시된 주소를 직접 복사해주세요."); } }
+  return <><SiteHeader /><main id="main" className="shell dashboard"><DashboardNav /><div className="dashboard-heading"><div><p className="eyebrow">우리 업체의 온라인 공간</p><h1>내 홈페이지 관리</h1><p>작성한 내용을 확인하고, 원하는 때에 공개하세요.</p></div><div className="account-menu"><span>{user?.email}</span><Button variant="ghost" size="sm" onClick={async () => { try { await logout(); router.push("/"); } catch (e) { setActionError((e as Error).message); } }}>로그아웃</Button></div></div>
+    {loading ? <div className="state-panel" aria-busy="true" role="status">홈페이지를 불러오는 중이에요…</div> : error ? <div className="state-panel" role="alert"><p>{error}</p><Button onClick={() => void reload()}>다시 시도</Button></div> : site && <>
+    {site.revision === 0 ? <section className="dashboard-welcome"><div className="welcome-icon"><LayoutMark /></div><h2>우리 업체의 첫 홈페이지를 만들어볼까요?</h2><p>업체 정보와 사진을 준비해주세요.<br />입력한 내용은 중간에 저장하고, 언제든 이어서 작성할 수 있어요.</p><Button asChild><Link href="/dashboard/editor"><Plus size={18} />홈페이지 만들기</Link></Button><div className="welcome-steps">{["기본 정보", "서비스와 사진", "디자인 확인", "주소와 공개"].map((s, i) => <span key={s}><b>{i + 1}</b>{s}</span>)}</div></section> : <section className="dashboard-site"><div className="dashboard-photo">{site.draft.hero ? <img src={mediaUrl(site.ownerId, site.draft.hero)} alt="초안 대표 사진" width={site.draft.hero.width} height={site.draft.hero.height} style={{ objectPosition: site.draft.heroPosition }} /> : <div><ImageIcon size={38} strokeWidth={1} /><span>대표 사진을 등록해주세요</span></div>}<span className="photo-caption">현재 초안</span></div><div className="dashboard-site-info"><span className={`status-badge ${site.status}`}>{site.status === "published" ? "공개 중" : site.status === "private" ? "비공개" : "작성 중"}</span><h2>{site.draft.name || "이름을 입력하지 않은 홈페이지"}</h2><p>{site.draft.tagline || "업체 소개를 작성해주세요."}</p><dl className="dashboard-dates"><div><dt>마지막 저장</dt><dd>{formatDate(site.savedAt)}</dd></div>{site.publishedAt && <div><dt>마지막 공개</dt><dd>{formatDate(site.publishedAt)}</dd></div>}</dl>{site.published && JSON.stringify(site.draft) !== JSON.stringify(site.published) && <p className="notice compact">아직 공개하지 않은 변경사항이 있어요.</p>}<div className="dashboard-actions"><Button asChild><Link href="/dashboard/editor"><Pencil size={17} />홈페이지 편집</Link></Button><Button asChild variant="outline"><Link href="/dashboard/preview"><Eye size={17} />미리보기</Link></Button></div></div></section>}
+    {site.slug && <section className="dashboard-address"><div><span className="eyebrow">우리 업체의 주소</span><p className="selectable">{SITE_ORIGIN}/{site.slug}</p></div><div><Button variant="outline" size="sm" onClick={() => void copy()}><Copy size={16} />주소 복사</Button>{site.status === "published" && <Button asChild variant="outline" size="sm"><a href={`/${site.slug}`} target="_blank" rel="noopener noreferrer"><ExternalLink size={16} />홈페이지 열기</a></Button>}</div></section>}
+    {site.revision > 0 && <section className="dashboard-publish"><div><h3>{site.status === "published" ? "공개 상태 관리" : site.status === "private" ? "다시 고객을 맞이할 준비가 됐나요?" : "홈페이지를 완성했다면, 공개해보세요."}</h3><p>{site.status === "published" ? "임시저장한 내용은 공개 내용 업데이트를 누르기 전까지 방문자에게 보이지 않아요." : "현재 초안을 확인하고 공개해요. 공개하면 내 홈페이지 주소로 고객이 방문할 수 있어요."}</p></div>{site.status === "published" ? <Button variant="outline" onClick={() => setConfirm(true)}>비공개로 전환</Button> : <Button asChild><Link href="/dashboard/editor?step=4">{site.status === "private" ? "현재 초안으로 다시 공개" : "공개 준비하기"}</Link></Button>}</section>}
+    </>}{notice && <p className="feedback success" role="status"><Check size={18} />{notice}</p>}{actionError && <p className="feedback error" role="alert">{actionError}</p>}
+    <div className="dashboard-help"><h3>저장과 공개, 이렇게 달라요.</h3><div><p><strong>임시저장</strong>작성 중인 내용을 나만 볼 수 있게 보관해요.</p><p><strong>홈페이지 공개</strong>완성된 내용을 내 주소로 방문한 고객에게 보여줘요.</p><p><strong>공개 내용 업데이트</strong>수정한 초안을 방문자에게 보여줄 내용으로 바꿔요.</p></div></div>
+    </main><Dialog open={confirm} onOpenChange={v => { if (!busy) setConfirm(v); }}><DialogContent><DialogTitle>홈페이지를 비공개로 전환할까요?</DialogTitle><DialogDescription>홈페이지 주소로 접속할 수 없게 됩니다. 입력 내용과 주소는 보관돼요.</DialogDescription><div className="dialog-actions"><Button variant="outline" onClick={() => setConfirm(false)} disabled={busy}>취소</Button><Button variant="destructive" onClick={() => void unpublish()} disabled={busy}>{busy ? "변경 중…" : "비공개로 전환"}</Button></div>{actionError && <p className="field-error" role="alert">{actionError}</p>}</DialogContent></Dialog></>;
+}
+function LayoutMark() { return <span aria-hidden="true">▤</span>; }
