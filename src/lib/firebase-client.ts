@@ -1,5 +1,5 @@
 import { getApp, getApps, initializeApp } from "firebase/app";
-import { connectAuthEmulator, getAuth } from "firebase/auth";
+import { connectAuthEmulator, getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { connectStorageEmulator, getStorage } from "firebase/storage";
 const config = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -21,18 +21,24 @@ export function firebaseClient() {
   }
   return { auth, storage };
 }
+export async function signInWithGoogle() {
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+  return signInWithPopup(firebaseClient().auth, provider);
+}
 export function authMessage(error: unknown) {
   const code = (error as { code?: string })?.code;
   const messages: Record<string, string> = {
-    "auth/email-already-in-use": "이미 가입된 이메일이에요. 로그인해주세요.",
-    "auth/invalid-email": "올바른 이메일 주소를 입력해주세요.",
-    "auth/invalid-credential": "이메일 또는 비밀번호를 확인해주세요.",
-    "auth/user-not-found": "이메일 또는 비밀번호를 확인해주세요.",
-    "auth/wrong-password": "이메일 또는 비밀번호를 확인해주세요.",
-    "auth/weak-password": "비밀번호는 8자 이상으로 입력해주세요.",
+    "auth/popup-closed-by-user": "구글 로그인 창이 닫혔어요. 다시 눌러 로그인해주세요.",
+    "auth/popup-blocked": "팝업이 차단됐어요. 이 사이트의 팝업을 허용한 뒤 다시 눌러주세요.",
+    "auth/cancelled-popup-request": "이미 로그인 창이 열려 있어요. 해당 창에서 계정을 선택해주세요.",
+    "auth/unauthorized-domain": "이 사이트의 구글 로그인 연결을 준비 중이에요. 관리자에게 문의해주세요.",
+    "auth/account-exists-with-different-credential": "같은 이메일로 가입된 계정이 있어요. 기존 홈페이지 연결을 위해 관리자에게 문의해주세요.",
+    "auth/user-disabled": "사용이 중지된 계정이에요. 관리자에게 문의해주세요.",
+    "auth/operation-not-supported-in-this-environment": "이 브라우저에서는 구글 로그인을 열 수 없어요. Chrome이나 Safari에서 다시 시도해주세요.",
     "auth/too-many-requests": "요청이 많아요. 잠시 후 다시 시도해주세요.",
     "auth/network-request-failed": "인터넷 연결을 확인한 뒤 다시 시도해주세요.",
-    "auth/operation-not-allowed": "현재 이메일 가입을 이용할 수 없어요. 관리자에게 문의해주세요.",
+    "auth/operation-not-allowed": "현재 구글 로그인을 이용할 수 없어요. 관리자에게 문의해주세요.",
   };
   return messages[code || ""] || "처리하지 못했어요. 잠시 후 다시 시도해주세요.";
 }

@@ -11,7 +11,7 @@
     "start": "next start --hostname 127.0.0.1",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run tests/unit.test.ts tests/inquiries-unit.test.ts",
+    "test": "vitest run tests/unit.test.ts tests/inquiries-unit.test.ts tests/google-auth.test.ts",
     "test:integration": "vitest run tests/integration.test.ts tests/inquiries-integration.test.ts",
     "emulators": "firebase emulators:start --project demo-woori --only auth,firestore,storage",
     "test:rules": "vitest run tests/rules.test.ts",

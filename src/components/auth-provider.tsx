@@ -15,6 +15,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return onIdTokenChanged(firebaseClient().auth, async user => {
       const current = ++generation;
       if (!user) { setState({ user: null, loading: false, error: "" }); return; }
+      setState(previous => previous.user?.uid === user.uid ? previous : { user: null, loading: true, error: "" });
       try {
         const response = await fetch("/api/session", { method: "POST", headers: { Authorization: `Bearer ${await user.getIdToken()}` } });
         if (!response.ok) throw new Error((await response.json()).error);

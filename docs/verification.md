@@ -68,3 +68,9 @@
 최종 `npm run lint`, `npm run typecheck`, `npm run build` 통과. 실제 운영 환경의 복합 색인 생성과 문의 접수는 아직 실행하지 않았습니다. Firebase 환경변수, 새 `INQUIRY_RATE_LIMIT_SECRET`, 규칙·색인 배포는 README의 연결 절차가 필요합니다.
 
 화면 기록: `screenshots/landing-v3-desktop.jpg`, `landing-v3-mobile.jpg`, `landing-v3-full.jpg`, `inquiry-inbox-desktop.jpg`, `inquiry-inbox-mobile.jpg`. 개발 도구의 N 표시와 테스트 자료는 운영 UI·고객 실적이 아닙니다.
+
+## Google 로그인 전환 검증 (2026-11-19)
+
+이메일·비밀번호 가입/로그인/재설정 UI 및 클라이언트 호출을 제거하고 Google 계정 선택 팝업으로 통합했습니다. /reset-password는 /login으로 이동합니다. 같은 UID의 인증 토큰 갱신 중에는 편집 화면을 유지합니다.
+
+단위 검사 51개 통과(Google 제공자 선택·성공 반환·팝업 취소/차단·도메인/설정/계정 충돌 오류 포함), lint와 빌드 통과. 실제 로컬 HTTP에서 signup/login에 Google 안내가 있고 비밀번호 입력이 없는 것, reset-password의 login 이동을 확인했습니다. Google SDK 호출 검사는 모의 응답을 사용했으며 운영 Google OAuth 및 서버 세션의 실제 연동 완료를 의미하지 않습니다. Firebase 콘솔의 Google 활성화·이메일 제공자 비활성화·도메인 등록, Vercel 서버 인증은 별도로 적용해야 합니다.
