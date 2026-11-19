@@ -8,6 +8,17 @@ beforeAll(() => { if (!process.env.FIRESTORE_EMULATOR_HOST) throw new Error("Emu
 const input = (phone = "010-1234-5678"): InquiryInput => ({ requestId: crypto.randomUUID(), name: "김고객", phone, kind: "견적 문의", region: "수원", message: "주방 리모델링 견적이 궁금합니다.", consent: true, website: "" });
 async function fixture() { const uid = `inquiry-${crypto.randomUUID()}`, slug = `inq-${crypto.randomUUID().slice(0, 8)}`; const ref = admin().db.doc(`publicSites/${slug}`); await ref.set({ ownerId: uid, slug, content: { name: "온결인테리어" } }); return { uid, slug, ref }; }
 describe("문의 접수·독립 집계 트랜잭션", () => {
+  it("문의 중단 시 새 접수를 차단하고 기존 내역과 집계를 유지하며 다시 켜면 접수한다", async () => {
+    const f = await fixture(); const original = input();
+    await submitInquiry(f.slug, original);
+    await f.ref.update({ "content.inquiryEnabled": false });
+    await expect(submitInquiry(f.slug, input("010-8888-1111"))).rejects.toMatchObject({ status: 403 });
+    expect((await listInquiries(f.uid)).stats.total).toBe(1);
+    expect((await getInquiry(f.uid, original.requestId)).id).toBe(original.requestId);
+    await f.ref.update({ "content.inquiryEnabled": true });
+    await submitInquiry(f.slug, input("010-8888-1111"));
+    expect((await listInquiries(f.uid)).stats.total).toBe(2);
+  });
   it("동시 재전송은 한 건으로 집계하고 다른 내용의 같은 요청 ID는 거부한다", async () => { const f = await fixture(), body = input(); const result = await Promise.all([submitInquiry(f.slug, body), submitInquiry(f.slug, body)]); expect(result[0]).toEqual(result[1]); const list = await listInquiries(f.uid); expect(list.stats).toEqual({ total: 1, new: 1, progress: 0, done: 0 }); expect(list.items).toHaveLength(1); expect(list.items[0]).not.toHaveProperty("submissionHash"); await expect(submitInquiry(f.slug, { ...body, message: "달라진 문의 내용입니다." })).rejects.toMatchObject({ status: 409 }); });
   it("동시 상태 변경은 한 번만 성공하고 메모·집계·삭제가 일치한다", async () => { const f = await fixture(), body = input(); await submitInquiry(f.slug, body); const writes = await Promise.allSettled([updateInquiry(f.uid, body.requestId, { status: "progress", note: "방문 일정 협의", revision: 1 }), updateInquiry(f.uid, body.requestId, { status: "done", note: "상담 완료", revision: 1 })]); expect(writes.filter(r => r.status === "fulfilled")).toHaveLength(1); const item = await getInquiry(f.uid, body.requestId); expect(item.revision).toBe(2); const { stats } = await listInquiries(f.uid); expect(stats.total).toBe(1); expect(stats.new).toBe(0); expect(stats.progress + stats.done).toBe(1); await expect(deleteInquiry(f.uid, body.requestId, 1)).rejects.toMatchObject({ status: 409 }); await deleteInquiry(f.uid, body.requestId, 2); expect((await listInquiries(f.uid)).stats).toEqual({ total: 0, new: 0, progress: 0, done: 0 }); });
   it("다른 계정은 조회·수정·삭제할 수 없고 공개 중단 후에도 소유자의 문의는 유지된다", async () => { const f = await fixture(), body = input(); await submitInquiry(f.slug, body); await expect(getInquiry("other-owner", body.requestId)).rejects.toMatchObject({ status: 404 }); await expect(updateInquiry("other-owner", body.requestId, { status: "done", note: "", revision: 1 })).rejects.toMatchObject({ status: 404 }); await expect(deleteInquiry("other-owner", body.requestId, 1)).rejects.toMatchObject({ status: 404 }); expect((await listInquiries("other-owner")).items).toEqual([]); await f.ref.delete(); await expect(submitInquiry(f.slug, input())).rejects.toMatchObject({ status: 404 }); expect((await listInquiries(f.uid)).stats.total).toBe(1); });

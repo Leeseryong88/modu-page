@@ -28,6 +28,7 @@ export async function submitInquiry(slug: string, input: InquiryInput) {
     const publicDoc = await tx.get(db.doc(`publicSites/${slug}`));
     if (!publicDoc.exists) throw new AppError(404, "지금은 문의를 접수할 수 없는 홈페이지예요.");
     const site = publicDoc.data() as PublicSite;
+    if (site.content.inquiryEnabled === false) throw new AppError(403, "온라인 문의 접수를 사용하지 않는 홈페이지예요. 등록된 연락처로 문의해주세요.");
     const inbox = db.doc(`inboxes/${site.ownerId}`);
     const ref = inbox.collection("messages").doc(input.requestId);
     const senderRef = db.doc(`inquiryLimits/sender-${hash(`${slug}:${phone}`)}`);

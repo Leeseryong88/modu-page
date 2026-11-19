@@ -15,3 +15,12 @@ describe("공개 입력 검증", () => {
     for (const color of Object.values(COLORS)) { const rgb = color.value.slice(1).match(/../g)!.map(x => parseInt(x, 16) / 255).map(x => x <= .04045 ? x / 12.92 : ((x + .055) / 1.055) ** 2.4); const lum = .2126 * rgb[0] + .7152 * rgb[1] + .0722 * rgb[2]; expect(1.05 / (lum + .05)).toBeGreaterThanOrEqual(4.5); }
   });
 });
+
+describe("온라인 문의 설정", () => {
+  it("기존 홈페이지에는 문의 기능을 유지하고 명시적인 비활성 설정을 보존한다", () => {
+    const legacy = { ...EMPTY_CONTENT }; delete (legacy as Partial<typeof EMPTY_CONTENT>).inquiryEnabled;
+    expect(contentSchema.parse(legacy).inquiryEnabled).toBe(true);
+    expect(contentSchema.parse({ ...EMPTY_CONTENT, inquiryEnabled: false }).inquiryEnabled).toBe(false);
+    expect(contentSchema.safeParse({ ...EMPTY_CONTENT, inquiryEnabled: "false" }).success).toBe(false);
+  });
+});

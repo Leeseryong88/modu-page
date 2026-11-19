@@ -15,7 +15,7 @@ export const contentSchema = z.object({
   name: text(30), industry: z.union([z.enum(INDUSTRIES), z.literal("")]), region: text(50), tagline: text(80), about: text(1000),
   phone: text(24).refine(v => !v || /^\+?[\d\s()-]+$/.test(v) && v.replace(/\D/g, "").length >= 8 && v.replace(/\D/g, "").length <= 15, "전화번호를 확인해주세요."),
   kakao: text(2000).refine(v => !v || kakaoUrl(v), "https://로 시작하는 카카오톡 채널 또는 채팅 주소를 입력해주세요."),
-  address: text(200), hours: text(100),
+  address: text(200), hours: text(100), inquiryEnabled: z.boolean().default(true),
   links: z.array(z.object({ id: z.string().uuid(), label: text(40), url }).strict()).max(3),
   hero: imageSchema.nullable(), logo: imageSchema.nullable(), heroPosition: z.enum(["center", "top", "bottom"]),
   color: z.enum(["navy", "green", "brown", "terracotta", "charcoal"]),
@@ -24,7 +24,7 @@ export const contentSchema = z.object({
 }).strict();
 export type SiteContent = z.infer<typeof contentSchema>;
 export type SiteImage = z.infer<typeof imageSchema>;
-export const EMPTY_CONTENT: SiteContent = { name: "", industry: "", region: "", tagline: "", about: "", phone: "", kakao: "", address: "", hours: "", links: [], hero: null, logo: null, heroPosition: "center", color: "navy", services: [], projects: [] };
+export const EMPTY_CONTENT: SiteContent = { name: "", industry: "", region: "", tagline: "", about: "", phone: "", kakao: "", address: "", hours: "", inquiryEnabled: true, links: [], hero: null, logo: null, heroPosition: "center", color: "navy", services: [], projects: [] };
 export const RESERVED_SLUGS = new Set(["api", "dashboard", "login", "signup", "logout", "reset-password", "admin", "www", "mail", "support", "help", "about", "contact", "terms", "privacy", "robots", "sitemap", "favicon", "assets", "images", "static", "auth", "account", "settings", "preview", "examples", "null", "undefined"]);
 export function slugError(value: string): string | null {
   if (!/^[a-z0-9](?:[a-z0-9-]{1,28})[a-z0-9]$/.test(value)) return "영문 소문자·숫자·하이픈으로 3~30자, 처음과 끝은 영문 또는 숫자로 입력해주세요.";
@@ -32,7 +32,7 @@ export function slugError(value: string): string | null {
   return null;
 }
 export type ValidationIssue = { path: string; message: string; step: number };
-export function fieldStep(path: string) { return /^(hero|logo|services|projects)/.test(path) ? 1 : path === "slug" ? 3 : 0; }
+export function fieldStep(path: string) { return /^(hero|logo|services|projects)/.test(path) ? 1 : path === "inquiryEnabled" ? 2 : path === "color" ? 3 : path === "slug" ? 4 : 0; }
 export function publishIssues(content: SiteContent): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
   const required = { name: "업체명을 입력해주세요.", industry: "업종을 선택해주세요.", region: "활동 지역을 입력해주세요.", tagline: "한 줄 소개를 입력해주세요.", phone: "전화번호를 입력해주세요.", hero: "대표 이미지를 등록해주세요." };

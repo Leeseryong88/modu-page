@@ -1,6 +1,6 @@
 export const BRAND = {
-  name: "우리업체",
-  logoText: "우리업체",
+  name: "모두의페이지",
+  logoText: "모두의페이지",
   description: "카페, 꽃집, 이사, 인테리어까지. 사진과 가게 정보로 홈페이지를 만들고, 내 주소로 공개해 전화·카카오톡 문의를 받으세요.",
   templateName: "기본 업체 소개형",
 };

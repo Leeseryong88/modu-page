@@ -18,7 +18,7 @@ export async function saveSite(uid: string, content: SiteContent, revision: numb
   const { db } = admin();
   if (publishSlug !== undefined) {
     const error = slugError(publishSlug);
-    if (error) throw new AppError(400, error, [{ path: "slug", message: error, step: 3 }]);
+    if (error) throw new AppError(400, error, [{ path: "slug", message: error, step: 4 }]);
     const issues = publishIssues(content);
     if (issues.length) throw new AppError(400, "공개 전에 아래 항목을 확인해주세요.", issues);
   }
@@ -30,7 +30,7 @@ export async function saveSite(uid: string, content: SiteContent, revision: numb
     if (publishSlug !== undefined && site.slug && site.slug !== publishSlug) throw new AppError(400, "최초 공개한 주소는 변경할 수 없어요.");
     if (publishSlug !== undefined) {
       const slugDoc = await tx.get(db.doc(`slugs/${publishSlug}`));
-      if (slugDoc.exists && slugDoc.data()?.ownerId !== uid) throw new AppError(409, "이미 사용 중인 주소예요. 다른 주소를 입력해주세요.", [{ path: "slug", message: "이미 사용 중인 주소예요.", step: 3 }]);
+      if (slugDoc.exists && slugDoc.data()?.ownerId !== uid) throw new AppError(409, "이미 사용 중인 주소예요. 다른 주소를 입력해주세요.", [{ path: "slug", message: "이미 사용 중인 주소예요.", step: 4 }]);
     }
     await verifyImages(tx, uid, content);
     const now = new Date().toISOString();
