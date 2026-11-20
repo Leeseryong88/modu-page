@@ -13,6 +13,25 @@ async function validContent(owner: string): Promise<SiteContent> {
   return { ...EMPTY_CONTENT, name: "온결인테리어", industry: "인테리어", region: "수원·용인·화성", tagline: "주방과 욕실, 생활에 맞게 새롭게.", phone: "010-0000-0000", hero };
 }
 describe("실제 Firestore 트랜잭션", () => {
+  it("개인 포트폴리오를 전화번호와 지역 없이 저장·공개한다", async () => {
+    const owner = uid(), slug = `person-${crypto.randomUUID().slice(0, 8)}`;
+    const content = { ...await validContent(owner), industry: "이력서·포트폴리오" as const, name: "김하늘", region: "", phone: "", kakao: "" };
+    const draft = await saveSite(owner, content, 0);
+    await saveSite(owner, draft.draft, draft.revision, slug);
+    expect((await getPublicSite(slug))?.content).toEqual(content);
+  });
+  it("영역별 모양을 초안과 공개본에 독립적으로 보존한다", async () => {
+    const owner = uid(), slug = `layout-${crypto.randomUUID().slice(0, 8)}`;
+    const content = { ...await validContent(owner), layout: { top: "cover", middle: "gallery", bottom: "banner" } as const };
+    const saved = await saveSite(owner, content, 0);
+    expect((await getSite(owner)).draft.layout).toEqual(content.layout);
+    const published = await saveSite(owner, saved.draft, saved.revision, slug);
+    const edited = await saveSite(owner, { ...content, layout: { top: "centered", middle: "story", bottom: "card" } }, published.revision);
+    expect((await getPublicSite(slug))?.content.layout).toEqual(content.layout);
+    await saveSite(owner, edited.draft, edited.revision, slug);
+    expect((await getPublicSite(slug))?.content.layout).toEqual(edited.draft.layout);
+    expect((await getPublicSite(slug))?.content.hero).toEqual(content.hero);
+  });
   it("입력 중인 주소도 초안에 저장하지만 예약은 공개 시에만 한다", async () => {
     const owner = uid(); const address = `draft-${crypto.randomUUID().slice(0, 8)}`;
     await saveSite(owner, EMPTY_CONTENT, 0, undefined, address);

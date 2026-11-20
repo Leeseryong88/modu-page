@@ -1,0 +1,6 @@
+.landing-page .site-header.has-marketing-tabs,.site-header.has-marketing-tabs{height:auto;background:#fff}
+.site-header.has-marketing-tabs .header-inner{height:84px}
+.site-header .use-case-nav-link[aria-current=page]{color:#285343;font-weight:650;text-decoration:underline;text-underline-offset:9px;text-decoration-thickness:2px}
+.marketing-mobile-nav{display:none}
+@media(max-width:1000px){.site-header.has-marketing-tabs .header-inner{height:72px}.site-header.has-marketing-tabs .header-inner .browse-link{display:none}.marketing-mobile-nav{display:flex;justify-content:center;gap:32px;border-top:1px solid #eef0ec;background:#fff;min-height:47px}.marketing-mobile-nav>a{font-size:14px;color:#66756a;display:flex;align-items:center;padding:10px 7px;border-bottom:2px solid transparent}.marketing-mobile-nav>a[aria-current=page]{font-weight:650;color:#285343;border-bottom-color:#285343}}
+@media(max-width:560px){.site-header.has-marketing-tabs .header-inner{height:68px}.marketing-mobile-nav{justify-content:flex-start;padding-left:20px;gap:24px}}

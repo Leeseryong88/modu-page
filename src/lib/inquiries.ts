@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const INQUIRY_KINDS = ["견적 문의", "예약·주문 문의", "기타 문의"] as const;
+export const INQUIRY_KINDS = ["일반 문의", "협업·채용 제안", "상담 문의", "참여·수강 문의", "견적 문의", "예약·주문 문의", "기타 문의"] as const;
 export const INQUIRY_STATUSES = { new: "새 문의", progress: "상담 중", done: "완료" } as const;
 export const inquiryStatusSchema = z.enum(["new", "progress", "done"]);
 export type InquiryStatus = z.infer<typeof inquiryStatusSchema>;

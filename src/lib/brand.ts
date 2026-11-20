@@ -1,8 +1,8 @@
 export const BRAND = {
   name: "모두의페이지",
   logoText: "모두의페이지",
-  description: "카페, 꽃집, 이사, 인테리어까지. 사진과 가게 정보로 홈페이지를 만들고, 내 주소로 공개해 전화·카카오톡 문의를 받으세요.",
-  templateName: "기본 업체 소개형",
+  description: "나의 포트폴리오부터 전문 서비스, 클래스와 매장까지. 세 부분을 조립해 홈페이지를 만들고, 하나의 주소로 나를 알리고 연결되세요.",
+  templateName: "상·중·하단 조립형",
 };
 export const SITE_ORIGIN = (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 export const COLORS = {

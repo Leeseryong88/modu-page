@@ -1,0 +1,4 @@
+import { BRAND } from "@/lib/brand";
+import { BrandLogo } from "./site-header";
+
+export function CompanyFooter() { return <footer className="company-footer"><div className="marketing-shell"><div className="company-footer-main"><div className="company-footer-brand"><BrandLogo /><strong>모두컴퍼니</strong><p>모두의 이야기를, 더 많은 사람에게.</p></div><dl className="company-details"><div><dt>사업자등록번호</dt><dd>642-12-02732</dd></div><div><dt>통신판매업신고번호</dt><dd>제2026-서울성동-0737호</dd></div><div><dt>대표자</dt><dd>이세룡</dd></div><div><dt>이메일</dt><dd><a href="mailto:airiska2025@gmail.com">airiska2025@gmail.com</a></dd></div><div><dt>고객센터</dt><dd><a href="tel:07045716016">070-4571-6016</a></dd></div><div><dt>주소</dt><dd>서울특별시 성동구 연무장11길 10 2035호(성수동2가, 우리큐브)</dd></div></dl></div><div className="company-footer-bottom">© {new Date().getFullYear()} 모두컴퍼니. {BRAND.name}</div></div></footer>; }

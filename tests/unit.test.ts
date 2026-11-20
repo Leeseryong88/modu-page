@@ -1,10 +1,23 @@
 import { describe, expect, it } from "vitest";
 import { COLORS } from "@/lib/brand";
+import { EXAMPLES } from "@/lib/examples";
+import { DEFAULT_LAYOUT, SECTION_TEMPLATES, sectionForField } from "@/lib/section-layouts";
 import { contentSchema, EMPTY_CONTENT, imageIds, kakaoUrl, publishIssues, safeHttpUrl, slugError } from "@/lib/schema";
 describe("공개 입력 검증", () => {
-  it("미완성 초안은 저장할 수 있지만 공개 필수 항목 6개를 안내한다", () => { expect(contentSchema.safeParse(EMPTY_CONTENT).success).toBe(true); expect(publishIssues(EMPTY_CONTENT)).toHaveLength(6); });
-  it.each(["api", "dashboard", "signup", "login", "reset-password", "admin", "preview", "examples", "_next", "ab", "a".repeat(31), "-store", "store-", "My-Store", "우리업체", "../foo"])("예약어/잘못된 주소 %s 차단", slug => { expect(slugError(slug)).not.toBeNull(); });
-  it.each(["카페", "꽃집", "이사·운송", "인테리어"])("다양한 업종 %s 초안을 저장할 수 있다", industry => { expect(contentSchema.safeParse({ ...EMPTY_CONTENT, industry }).success).toBe(true); });
+  it("개인 페이지는 전화번호와 지역을 공개하지 않고도 게시할 수 있다", () => {
+    const content = { ...EMPTY_CONTENT, name: "나의 포트폴리오", industry: "이력서·포트폴리오" as const, tagline: "작업과 경험", hero: { id: crypto.randomUUID(), width: 1200, height: 800 } };
+    expect(publishIssues(content)).toEqual([]);
+    expect(publishIssues({ ...content, inquiryEnabled: false })).toEqual([]);
+    expect(contentSchema.safeParse({ ...content, phone: "잘못된 번호" }).success).toBe(false);
+  });
+  it.each(EXAMPLES)("$slug 예시가 실제 편집·공개 규칙과 일치한다", example => {
+    expect(contentSchema.safeParse(example.content).success).toBe(true);
+    expect(publishIssues(example.content)).toEqual([]);
+    expect(imageIds(example.content).every(id => !!example.imageSources[id])).toBe(true);
+  });
+  it("미완성 초안은 저장할 수 있지만 공개 필수 항목 4개를 안내한다", () => { expect(contentSchema.safeParse(EMPTY_CONTENT).success).toBe(true); expect(publishIssues(EMPTY_CONTENT)).toHaveLength(4); });
+  it.each(["api", "dashboard", "signup", "login", "reset-password", "admin", "preview", "examples", "use-cases", "_next", "ab", "a".repeat(31), "-store", "store-", "My-Store", "우리업체", "../foo"])("예약어/잘못된 주소 %s 차단", slug => { expect(slugError(slug)).not.toBeNull(); });
+  it.each(["카페", "꽃집", "이사·운송", "인테리어", "이력서·포트폴리오", "프리랜서·창작자", "전문가·상담", "클래스·교육", "모임·커뮤니티", "행사·프로젝트"])("다양한 업종 %s 초안을 저장할 수 있다", industry => { expect(contentSchema.safeParse({ ...EMPTY_CONTENT, industry }).success).toBe(true); });
   it.each(["my-store", "abc", "123", "a".repeat(30)])("정상 주소 %s 허용", slug => { expect(slugError(slug)).toBeNull(); });
   it.each(["javascript:alert(1)", "data:text/html,x", "//evil.test", "https://name:password@example.com", "file:///tmp/a"])("위험한 링크 차단 %s", url => { expect(safeHttpUrl(url)).toBe(false); });
   it("카카오 링크의 호스트와 프로토콜 검증", () => { expect(kakaoUrl("https://pf.kakao.com/_test")).toBe(true); expect(kakaoUrl("https://pf.kakao.com.attacker.test")).toBe(false); expect(kakaoUrl("http://pf.kakao.com/a")).toBe(false); });
@@ -23,4 +36,25 @@ describe("온라인 문의 설정", () => {
     expect(contentSchema.parse({ ...EMPTY_CONTENT, inquiryEnabled: false }).inquiryEnabled).toBe(false);
     expect(contentSchema.safeParse({ ...EMPTY_CONTENT, inquiryEnabled: "false" }).success).toBe(false);
   });
+});
+
+describe("상단·중단·하단 조립", () => {
+  it("기존 저장 데이터와 부분 설정에 기본 모양을 채운다", () => {
+    const { layout: _layout, ...legacy } = EMPTY_CONTENT;
+    expect(contentSchema.parse(legacy).layout).toEqual(DEFAULT_LAYOUT);
+    expect(contentSchema.parse({ ...legacy, layout: { top: "cover" } }).layout).toEqual({ ...DEFAULT_LAYOUT, top: "cover" });
+  });
+  it("64가지 조합을 저장해도 입력 내용과 이미지 참조를 유지한다", () => {
+    const hero = { id: crypto.randomUUID(), width: 1000, height: 800 };
+    const original = { ...EMPTY_CONTENT, name: "모로커피", hero, about: "우리 가게 소개", services: [{ id: crypto.randomUUID(), title: "커피", description: "오늘의 커피" }], inquiryEnabled: false };
+    for (const top of SECTION_TEMPLATES.top) for (const middle of SECTION_TEMPLATES.middle) for (const bottom of SECTION_TEMPLATES.bottom) {
+      const layout = { top: top.id, middle: middle.id, bottom: bottom.id };
+      expect(contentSchema.parse({ ...original, layout })).toEqual({ ...original, layout });
+    }
+  });
+  it("지원하지 않는 템플릿과 다른 영역의 템플릿을 거부한다", () => {
+    expect(contentSchema.safeParse({ ...EMPTY_CONTENT, layout: { ...DEFAULT_LAYOUT, top: "gallery" } }).success).toBe(false);
+    expect(contentSchema.safeParse({ ...EMPTY_CONTENT, layout: { ...DEFAULT_LAYOUT, middle: "unknown" } }).success).toBe(false);
+  });
+  it.each([["hero", "top"], ["name", "top"], ["region", "top"], ["about", "middle"], ["services.2.title", "middle"], ["projects.1.image", "middle"], ["phone", "bottom"], ["links.0.url", "bottom"], ["inquiryEnabled", "bottom"], ["layout.bottom", "bottom"]])("검증 항목 %s를 %s 편집창에 연결한다", (path, section) => { expect(sectionForField(path)).toBe(section); });
 });

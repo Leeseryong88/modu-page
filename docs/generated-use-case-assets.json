@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-20",
+  "generator": "image_gen",
+  "usage": "Fictional editorial website examples and usage scenarios; not actual customer results.",
+  "assets": [
+    {
+      "key": "business-card",
+      "prompt": "Use case: photorealistic-natural. Asset type: premium Korean website builder use-case page, editorial photography. Create a single high-quality wide 3:2 landscape photograph of a small business owner handing a beautifully minimal forest-green and warm-white business card to a potential client across a contemporary design studio desk. Close focus on natural human hands and the crisp card, softly blurred Korean interior studio with wood samples, a clean laptop and daylight in background. The business card is the visual hero, centered, rich tactile paper. The card has only a small elegant abstract geometric mark, very subtle horizontal print-like lines, NO readable text, NO QR code, NO brand names, no overlay UI, no watermark. Candid commercial editorial aesthetic, soft directional afternoon daylight, deep forest green, white, natural timber, realistic anatomy, sophisticated and inviting. Reserve clean upper right area for a small website preview overlay added separately by code. Do not render a website mockup in foreground.",
+      "path": "public/images/use-cases/business-card.webp",
+      "original": "C:/Users/GENTLEMONSTER/.codex/generated_images/01a1f93f-8828-74e0-ac8b-d962fe071155/exec-f58060df-15c0-4c2f-b205-f6b653c8fa3b.png",
+      "processing": "Resized to width 1440 and encoded to WebP with sharp; no compositing."
+    },
+    {
+      "key": "professional",
+      "prompt": "Use case: photorealistic-natural. Asset type: use-case page image for independent professionals creating a personal website to explain services and receive inquiries. Single wide 3:2 landscape editorial photograph in a modern independent consultant office in Seoul. A Korean woman professional around 35 in relaxed charcoal tailoring sits at a light wood desk beside a half-open slim laptop, listening attentively to an out-of-focus client opposite her. Camera from side, natural friendly confident expression, tasteful bookshelf and broad window, orderly closed folders and a glass of water. Professional could be lawyer, accountant or consultant; no scales, gavel, legal logos, credentials, official documents or readable private information. Natural skin, refined daylight photography, muted deep blue and forest green accents, bright soft neutral background, human and approachable, premium magazine art direction, no text, no watermark, not a stock handshake pose.",
+      "path": "public/images/use-cases/professional.webp",
+      "original": "C:/Users/GENTLEMONSTER/.codex/generated_images/01a1f93f-8828-74e0-ac8b-d962fe071155/exec-d27b2b3b-6ba7-441e-80f5-b6695eabf08a.png",
+      "processing": "Resized to width 1440 and encoded to WebP with sharp; no compositing."
+    },
+    {
+      "key": "creative-work",
+      "prompt": "Use case: photorealistic-natural. Asset type: personal portfolio and creative freelance website use-case image. Single high-quality wide 3:2 landscape editorial photograph of a creative designer's carefully arranged work table near a sunlit window: a large cobalt-blue abstract art print on textured paper, vivid tomato-red geometric paper sculpture, a small chrome desk lamp, silver laptop seen partly from behind, stacked art books with blank spines, a pencil and material swatches. A Korean young adult designer's hand is gently arranging a print at the far edge; no face needed. Bold but refined art direction with cobalt, burnt red, ivory, sage green, clean generous space. Clearly a real creative workspace with tangible textures, optimistic afternoon shadows, no text, no brand logos, no watermarks, no UI or screenshots. Composition should remain strong when cropped to landscape or square.",
+      "path": "public/images/use-cases/creative-work.webp",
+      "original": "C:/Users/GENTLEMONSTER/.codex/generated_images/01a1f93f-8828-74e0-ac8b-d962fe071155/exec-954de5f9-e243-4758-8417-5a96749f2e4c.png",
+      "processing": "Resized to width 1440 and encoded to WebP with sharp; no compositing."
+    },
+    {
+      "key": "workshop",
+      "prompt": "Use case: photorealistic-natural. Asset: welcoming class and small community website hero photograph. Single wide 3:2 landscape editorial photo of a small hands-on printmaking and paper collage workshop in a bright Seoul creative studio. Three Korean adult participants, casually dressed, quietly enjoying making colorful prints together around one large wooden table; instructor's hands demonstrating a small ink roller. Focus on beautiful cobalt, terracotta and sage paper artwork, textured papers and friendly concentration, faces secondary, spontaneous natural posture. Large side window and plants, warm soft daylight, contemporary understated interior, premium lifestyle magazine quality. No written words, no logos, no watermarks, no computer-generated UI. Realistic hands and tools; no improbable art equipment. Natural and inviting, not a posed commercial group photo.",
+      "path": "public/images/use-cases/workshop.webp",
+      "original": "C:/Users/GENTLEMONSTER/.codex/generated_images/01a1f93f-8828-74e0-ac8b-d962fe071155/exec-d43984e8-7d75-4027-ac21-af5d4a8a435c.png",
+      "processing": "Resized to width 1440 and encoded to WebP with sharp; no compositing."
+    },
+    {
+      "key": "photographer",
+      "prompt": "Use case: photorealistic-natural. Asset: independent photographer portfolio website hero. Single wide 3:2 landscape photograph of a beautiful independent photographer's workspace. Black unbranded mirrorless camera with lens on a charcoal tabletop beside large physical fine-art prints showing a quiet coastal landscape and atmospheric architecture, a gray linen notebook, a warm desk lamp, and a tiny ceramic cup. Soft overcast window light, confident restrained composition, crisp texture on matte paper and camera, muted slate blue, ochre and charcoal. Rich photographic tonal depth, a real lived-in working studio rather than stock business office. No text, no watermarks, no brands or legible logos, no people, no screens. The camera and photographs communicate that this is a working photographer's portfolio.",
+      "path": "public/images/use-cases/photographer.webp",
+      "original": "C:/Users/GENTLEMONSTER/.codex/generated_images/01a1f93f-8828-74e0-ac8b-d962fe071155/exec-dc02fd96-c1eb-4e21-8f07-4ed6604b270a.png",
+      "processing": "Resized to width 1440 and encoded to WebP with sharp; no compositing."
+    }
+  ]
+}
