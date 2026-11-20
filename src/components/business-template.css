@@ -90,4 +90,4 @@
 
 .region-top:not(.is-editable),.region-top:not(.is-editable)>.region-content{display:contents}
 
-@container business (min-width:1000px){.is-example .region-middle.layout-list .business-projects,.is-example .region-middle.layout-cards .business-projects{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@container business (min-width:1000px){.region-middle.layout-list .business-projects,.region-middle.layout-cards .business-projects{grid-template-columns:repeat(3,minmax(0,1fr))}}

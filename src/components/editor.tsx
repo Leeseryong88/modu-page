@@ -14,6 +14,7 @@ import { SectionFields, fieldId } from "./section-fields";
 import { SectionTemplatePicker } from "./section-template-picker";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "./ui/dialog";
+import { SiteStarter } from "./site-starter";
 import "./editor.css";
 
 const REGIONS: SiteSection[] = ["top", "middle", "bottom"];
@@ -22,13 +23,17 @@ function inputIssues(content: SiteContent) {
   const result = contentSchema.safeParse(content);
   return result.success ? [] : result.error.issues.map(i => ({ path: i.path.join("."), message: i.message, step: fieldStep(i.path.join(".")) }));
 }
-export function Editor() {
+export function Editor({ exampleSlug }: { exampleSlug?: string }) {
   const { site, loading, error, reload } = useSite();
+  const [started, setStarted] = useState<SiteRecord | null>(null);
+  const [exampleName, setExampleName] = useState("");
+  const [continueDraft, setContinueDraft] = useState(false);
   if (loading) return <div className="state-panel" role="status" aria-busy="true">저장한 내용을 불러오고 있어요…</div>;
   if (error || !site) return <div className="state-panel" role="alert"><p>{error}</p><Button onClick={() => void reload()}>다시 시도</Button></div>;
-  return <EditorWorkspace initial={site} />;
+  if (!started && !continueDraft && (site.revision === 0 || exampleSlug !== undefined)) return <SiteStarter site={site} exampleSlug={exampleSlug} onStarted={(next, name) => { setExampleName(name ?? ""); setStarted(next); }} onContinue={() => { window.history.replaceState(null, "", "/dashboard/editor"); setContinueDraft(true); }} />;
+  return <EditorWorkspace initial={started ?? site} exampleName={exampleName} />;
 }
-function EditorWorkspace({ initial }: { initial: SiteRecord }) {
+function EditorWorkspace({ initial, exampleName }: { initial: SiteRecord; exampleName: string }) {
   const [site, setSite] = useState(initial);
   const [content, setContent] = useState(() => withLayout(initial.draft));
   const [draft, setDraft] = useState(content);
@@ -123,6 +128,7 @@ function EditorWorkspace({ initial }: { initial: SiteRecord }) {
       <Button variant="outline" size="sm" onClick={() => void save()} disabled={busy || uploads > 0}><Save size={16} />임시저장</Button><Button size="sm" onClick={() => { rememberFocus(); setPublishOpen(true); }} disabled={busy}>공개하기</Button><Link href="/dashboard" className="assembly-exit">관리 화면</Link>
     </div></header>
     <main id="main" className="assembly-main">
+      {exampleName && <div className="starter-imported" role="status"><CheckCircle2 size={22} /><div><strong>‘{exampleName}’ 예시를 내 초안으로 가져왔어요.</strong><p>사진과 디자인은 준비됐어요. 상단에서 이름과 소개, 중단에서 사진과 활동, 하단에서 연락 방법을 내 정보로 바꿔주세요.</p><button onClick={() => openSection("top", "name")}>내 이름부터 바꾸기</button></div></div>}
       <div className="assembly-intro"><div><span className="assembly-eyebrow"><Layers3 size={16} />세 부분으로 완성하는 우리 홈페이지</span><h1>누르고, 고르고, 채워보세요.</h1><p>바꾸고 싶은 영역을 누르면 편집창이 열려요. 상단·중단·하단을 내 취향대로 조립해보세요.</p></div><Button variant="outline" onClick={() => { rememberFocus(); setColorOpen(true); }} disabled={busy}><Palette size={17} />전체 색상</Button></div>
       <nav className="assembly-sections" aria-label="편집할 영역 선택">{REGIONS.map(region => {
         const missing = pending.filter(issue => sectionForField(issue.path) === region).length;

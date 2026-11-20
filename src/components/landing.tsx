@@ -18,7 +18,7 @@ import "./landing-inclusive.css";
 
 const questions = [
   { title: "사업자가 아니어도 사용할 수 있나요?", answer: "물론이에요. 개인 이력서와 포트폴리오, 프리랜서 소개, 클래스나 소모임 등 다양한 용도로 쓸 수 있어요. 전화번호와 활동 지역은 선택사항이며, 번호를 공개하지 않고 온라인 문의만 받을 수도 있어요." },
-  { title: "컴퓨터나 디자인을 잘 몰라도 만들 수 있나요?", answer: "네. 빈 화면을 디자인할 필요 없이, 안내에 따라 홈페이지의 상단·중단·하단을 눌러 내용을 채우고, 각 부분의 모양을 고르면 됩니다. 완성될 화면을 보면서 조립할 수 있어요." },
+  { title: "컴퓨터나 디자인을 잘 몰라도 만들 수 있나요?", answer: "네. 처음부터 만들거나 마음에 드는 예시의 사진·문구·디자인을 가져와 시작할 수 있어요. 상단·중단·하단을 눌러 내 내용으로 바꾸고, 각 부분의 모양도 자유롭게 선택하세요." },
   { title: "홈페이지를 만들면 어떻게 공유하나요?", answer: "원하는 주소를 정해 공개한 뒤, 그 주소를 복사해 카카오톡이나 SNS 프로필, 명함 등에 공유하세요. 방문자는 회원가입 없이 내 홈페이지를 볼 수 있어요." },
   { title: "협업이나 상담, 참여 문의는 어떻게 받나요?", answer: "방문자가 공개 홈페이지의 문의 양식에 이름, 연락처, 내용을 남기면 별도의 문의함에 접수돼요. 홈페이지 주인만 내용을 볼 수 있고, 상담 상태와 내부 메모를 관리할 수 있어요. 전화·카카오톡 연결도 함께 제공해요." },
   { title: "공개한 뒤에 사진이나 내용을 바꿀 수 있나요?", answer: "네. 관리 화면에서 수정하고 ‘공개 내용 업데이트’를 누르면 반영돼요. 임시저장한 내용은 나만 확인할 수 있고, 필요하면 홈페이지를 비공개로 바꿀 수도 있어요." },
@@ -26,7 +26,7 @@ const questions = [
 
 export function Landing() {
   const { user } = useAuth();
-  const createHref = user ? "/dashboard/editor" : "/signup";
+  const createHref = user ? "/dashboard/editor" : "/signup?next=%2Fdashboard%2Feditor";
   const [previewExample, setPreviewExample] = useState<BusinessExample | null>(null);
   const previewOpener = useRef<HTMLElement | null>(null);
   function openExample(example: BusinessExample) { previewOpener.current = document.activeElement as HTMLElement; setPreviewExample(example); }
@@ -45,10 +45,10 @@ export function Landing() {
     <SiteExamples onPreview={openExample} />
 
     <section id="how-it-works" className="make-section"><div className="marketing-shell"><div className="marketing-section-head"><div><p className="section-label">처음이어도 괜찮아요</p><h2>세 부분을 눌러,<br />내 이야기로 완성하세요.</h2></div><p>화면을 누르고, 열린 창에서 내용을 채우세요.<br />작성 중에는 임시저장하고 나중에 이어갈 수 있어요.</p></div><AssemblyDemo />
-      <ol className="making-steps"><li><span>01 · 조립하기</span><h3>각 부분의 모양을 골라요</h3><p>상단·중단·하단마다 4가지 템플릿.<br />마음에 드는 조합으로 시작해요.</p></li><li><span>02 · 이야기 채우기</span><h3>눌러서 나답게 바꿔요</h3><p>각 부분을 눌러 사진과 소개를 넣고<br />적용한 뒤 PC·휴대폰 화면을 확인해요.</p></li><li><span>03 · 저장하고 공개하기</span><h3>내 주소로 세상과 만나요</h3><p>초안을 저장하고, 준비되면 공개해요.<br />명함·SNS·이력서에 주소를 담으세요.</p></li></ol>
+      <ol className="making-steps"><li><span>01 · 시작점 고르기</span><h3>처음부터, 또는 예시부터</h3><p>빈 페이지로 시작하거나 예시를 골라요.<br />예시의 사진·문구·디자인을 가져와요.</p></li><li><span>02 · 내 내용으로 바꾸기</span><h3>눌러서 나답게 다듬어요</h3><p>상단·중단·하단에서 사진과 소개를 바꾸고<br />PC·휴대폰 화면을 확인해요.</p></li><li><span>03 · 저장하고 공개하기</span><h3>내 주소로 세상과 만나요</h3><p>초안을 저장하고, 준비되면 공개해요.<br />명함·SNS·이력서에 주소를 담으세요.</p></li></ol>
     </div></section>
 
     <section id="questions" className="faq-section marketing-shell"><div><p className="section-label">시작 전 궁금한 점</p><h2>시작하는 누구나<br />궁금할 이야기.</h2></div><div className="faq-list">{questions.map(question => <details key={question.title}><summary>{question.title}<ChevronDown size={20} /></summary><p>{question.answer}</p></details>)}</div></section>
     <section className="marketing-end"><div className="marketing-shell"><div><p>내가 하는 일, 좋아하는 것, 함께하고 싶은 이야기.</p><h2>나만의 첫 홈페이지,<br />여기서 시작하세요.</h2></div><div><Button asChild><Link href={createHref}>내 홈페이지 만들기</Link></Button><span><Smartphone size={16} />휴대폰에서도 나답게, 보기 좋게.</span></div></div></section>
-  </main><CompanyFooter /><ExamplePreviewDialog example={previewExample} onClose={() => setPreviewExample(null)} opener={previewOpener} createHref={createHref} /></div>;
+  </main><CompanyFooter /><ExamplePreviewDialog example={previewExample} onClose={() => setPreviewExample(null)} opener={previewOpener} /></div>;
 }

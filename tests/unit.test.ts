@@ -1,11 +1,21 @@
 import { describe, expect, it } from "vitest";
 import { COLORS } from "@/lib/brand";
+import { authReturnPath, exampleEditorHref } from "@/lib/start-path";
 import { EXAMPLES } from "@/lib/examples";
 import { getExampleStory } from "@/lib/example-stories";
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { DEFAULT_LAYOUT, SECTION_TEMPLATES, sectionForField } from "@/lib/section-layouts";
 import { contentSchema, EMPTY_CONTENT, imageIds, kakaoUrl, publishIssues, safeHttpUrl, slugError } from "@/lib/schema";
+describe("선택한 예시로 로그인 후 돌아가기", () => {
+  it("로그인 전후 예시 선택을 유지한다", () => {
+    expect(authReturnPath(exampleEditorHref("workshop"))).toBe("/dashboard/editor?example=workshop");
+    expect(authReturnPath("/dashboard/inquiries?status=new")).toBe("/dashboard/inquiries?status=new");
+  });
+  it.each(["https://evil.example", "//evil.example/dashboard", "/\\evil.example", "/dashboard/../../signup", "/signup", ["/dashboard"], null, "/dashboard\n"])("외부 주소와 잘못된 경로를 사용하지 않는다: %s", value => {
+    expect(authReturnPath(value)).toBe("/dashboard");
+  });
+});
 describe("예시 홈페이지의 콘텐츠 품질", () => {
   it("네 카테고리마다 둘 이상의 홈페이지를 제공한다", () => {
     for (const audience of ["개인·창작자", "전문가", "클래스·모임", "매장·비즈니스"]) expect(EXAMPLES.filter(example => example.audience === audience).length).toBeGreaterThanOrEqual(2);

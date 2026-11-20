@@ -3,6 +3,9 @@ const config: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   poweredByHeader: false,
   serverExternalPackages: ["firebase-admin"],
+  outputFileTracingIncludes: {
+    "/api/site/start": ["./public/images/examples/*.webp", "./public/images/examples-expanded/*.webp", "./public/images/use-cases/*.webp"],
+  },
   async headers() {
     return [{ source: "/:path*", headers: [
       { key: "X-Content-Type-Options", value: "nosniff" },

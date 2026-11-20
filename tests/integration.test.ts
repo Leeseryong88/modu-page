@@ -1,5 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
-import { EMPTY_CONTENT, type SiteContent } from "@/lib/schema";
+import { EMPTY_CONTENT, contentSchema, imageIds, publishIssues, type SiteContent } from "@/lib/schema";
+import { EXAMPLES } from "@/lib/examples";
+import { startSite } from "@/lib/server/start-site";
 import { admin } from "@/lib/server/firebase";
 import { getSite, getPublicSite, listPublicSites, saveSite, unpublishSite } from "@/lib/server/sites";
 beforeAll(() => {
@@ -7,6 +9,53 @@ beforeAll(() => {
   process.env.FIREBASE_PROJECT_ID = "demo-woori"; process.env.FIREBASE_STORAGE_BUCKET = "demo-woori.appspot.com"; process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATORS = "true";
 });
 function uid() { return `test-${crypto.randomUUID()}`; }
+describe("예시에서 내 홈페이지 시작하기", () => {
+  it("처음부터 시작한 빈 초안도 새로 접속하면 유지한다", async () => {
+    const owner = uid(); const site = await startSite(owner, null, 0);
+    expect(site.revision).toBe(1); expect(site.draft).toEqual(EMPTY_CONTENT);
+    expect(await getSite(owner)).toEqual(site);
+  });
+  it.each(["workshop", "bookclub", "cafe"])("%s의 디자인·글·사진을 독립된 초안으로 복사하고 수정·공개한다", async exampleSlug => {
+    const owner = uid(); const example = EXAMPLES.find(item => item.slug === exampleSlug)!;
+    const before = structuredClone(example);
+    const site = await startSite(owner, exampleSlug, 0);
+    expect(site.status).toBe("draft"); expect(site.published).toBeNull();
+    expect(site.draft.layout).toEqual(example.content.layout); expect(site.draft.color).toBe(example.content.color);
+    expect(site.draft.name).toBe(example.content.name); expect(site.draft.about).toBe(example.content.about);
+    expect(site.draft.projects.map(item => [item.title, item.description])).toEqual(example.content.projects.map(item => [item.title, item.description]));
+    expect(site.draft.phone).toBe(""); expect(site.draft.kakao).toBe(""); expect(site.draft.links).toEqual([]);
+    expect(contentSchema.safeParse(site.draft).success).toBe(true); expect(publishIssues(site.draft)).toEqual([]);
+    const ids = imageIds(site.draft); expect(ids).toHaveLength(4);
+    for (const id of ids) {
+      expect(imageIds(example.content)).not.toContain(id);
+      expect((await admin().db.doc(`sites/${owner}/media/${id}`).get()).data()?.state).toBe("ready");
+      const [data] = await admin().bucket.file(`users/${owner}/media/${id}`).download(); expect(data.length).toBeGreaterThan(1000);
+    }
+    const own = { ...site.draft, name: "내가 만든 홈페이지", projects: site.draft.projects.slice(0, 2) };
+    const saved = await saveSite(owner, own, site.revision);
+    expect((await getSite(owner)).draft).toEqual(own);
+    const slug = `copy-${crypto.randomUUID().slice(0, 8)}`;
+    const published = await saveSite(owner, own, saved.revision, slug);
+    expect((await getPublicSite(slug))?.content).toEqual(own); expect(example).toEqual(before);
+    await unpublishSite(owner, published.revision);
+  });
+  it("기존 초안 교체에는 명시적 선택이 필요하고 공개본과 주소를 보존한다", async () => {
+    const owner = uid(), slug = `keep-${crypto.randomUUID().slice(0, 8)}`;
+    const original = await saveSite(owner, await validContent(owner), 0, slug);
+    await expect(startSite(owner, "workshop", original.revision)).rejects.toThrow("먼저 확인");
+    const replaced = await startSite(owner, "workshop", original.revision, true);
+    expect(replaced.draft.name).toBe("주말의 작업실"); expect(replaced.slug).toBe(slug);
+    expect(replaced.published).toEqual(original.published); expect(replaced.status).toBe("published");
+    expect((await getPublicSite(slug))?.content).toEqual(original.published);
+    await expect(startSite(owner, "bookclub", original.revision, true)).rejects.toThrow("다른 창");
+    await expect(saveSite(uid(), replaced.draft, 0)).rejects.toThrow("사진 등록");
+    await unpublishSite(owner, replaced.revision);
+  });
+  it("유효하지 않은 예시로 초안을 만들지 않는다", async () => {
+    const owner = uid(); await expect(startSite(owner, "../../secret", 0)).rejects.toThrow("예시를 찾지");
+    expect((await getSite(owner)).revision).toBe(0);
+  });
+});
 async function validContent(owner: string): Promise<SiteContent> {
   const hero = { id: crypto.randomUUID(), width: 1200, height: 900 };
   await admin().db.doc(`sites/${owner}/media/${hero.id}`).set({ state: "ready", image: hero });

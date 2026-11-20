@@ -9,11 +9,11 @@ import { useAuth } from "./auth-provider";
 import { BrandLogo } from "./site-header";
 import { Button } from "./ui/button";
 import "./google-auth.css";
-export function AuthForm({ mode }: { mode: "signup" | "login" }) {
+export function AuthForm({ mode, next = "/dashboard" }: { mode: "signup" | "login"; next?: string }) {
   const [busy, setBusy] = useState(false), [error, setError] = useState("");
   const pending = useRef(false);
   const { user, loading, error: sessionError } = useAuth(); const router = useRouter();
-  useEffect(() => { if (user) router.replace("/dashboard"); }, [user, router]);
+  useEffect(() => { if (user) router.replace(next); }, [user, router, next]);
   async function submit() {
     if (pending.current) return;
     pending.current = true; setBusy(true); setError("");
@@ -27,7 +27,8 @@ export function AuthForm({ mode }: { mode: "signup" | "login" }) {
     <p className="google-auth-help">처음 방문하셨다면 구글 로그인과 함께 계정이 만들어져요.<br />이미 가입했다면 기존 홈페이지를 이어서 관리할 수 있어요.</p>
     {(error || sessionError) && <p className="field-error" role="alert">{error || sessionError}</p>}
     {sessionError && <Button variant="outline" className="full-width" onClick={() => location.reload()}>로그인 연결 다시 확인</Button>}
-    <p className="auth-switch">{mode === "signup" ? <>이미 계정이 있나요? <Link href="/login">로그인</Link></> : <>처음 방문하셨나요? <Link href="/signup">구글로 시작하기</Link></>}</p></section></main></div>;
+    {next.includes("example=") && <p className="notice">선택한 예시를 기억하고 있어요. 로그인 후 사진과 소개를 내 내용으로 바꿔보세요.</p>}
+    <p className="auth-switch">{mode === "signup" ? <>이미 계정이 있나요? <Link href={`/login?next=${encodeURIComponent(next)}`}>로그인</Link></> : <>처음 방문하셨나요? <Link href={`/signup?next=${encodeURIComponent(next)}`}>구글로 시작하기</Link></>}</p></section></main></div>;
 }
 function GoogleMark() {
   return <svg aria-hidden="true" width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6C44.4 38.03 46.98 31.86 46.98 24.55Z"/><path fill="#FBBC05" d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.77-4.59l-7.98-6.19A23.87 23.87 0 0 0 0 24c0 3.87.93 7.53 2.56 10.78l7.97-6.19Z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.15 1.45-4.92 2.3-8.18 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"/></svg>;

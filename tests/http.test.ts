@@ -22,6 +22,27 @@ beforeAll(async () => {
   [a, b] = await Promise.all([account(), account()]);
 });
 describe("브라우저가 사용하는 실제 HTTP 흐름", () => {
+  it("예시 복사는 인증·Origin·소유권을 확인하고 저장·공개한 사진을 제공한다", async () => {
+    const owner = await account();
+    const payload = { exampleSlug: "workshop", revision: 0 };
+    expect((await fetch(`${base}/api/site/start`, { method: "POST", headers: { Origin: base, "Content-Type": "application/json" }, body: JSON.stringify(payload) })).status).toBe(401);
+    expect((await fetch(`${base}/api/site/start`, { method: "POST", headers: { Origin: "https://evil.example", Authorization: `Bearer ${owner.idToken}`, "Content-Type": "application/json" }, body: JSON.stringify(payload) })).status).toBe(403);
+    expect((await request(owner, "/api/site/start", "POST", { ...payload, ownerId: b.localId })).status).toBe(400);
+    expect((await request(owner, "/api/site/start", "POST", { ...payload, exampleSlug: "missing" })).status).toBe(400);
+    const response = await request(owner, "/api/site/start", "POST", payload); expect(response.status).toBe(200);
+    let site: SiteRecord = await response.json(); expect(site.draft.name).toBe("주말의 작업실");
+    const imageUrl = `${base}/api/media/${owner.localId}/${site.draft.hero!.id}`;
+    expect((await fetch(imageUrl)).status).toBe(404);
+    expect((await fetch(imageUrl, { headers: { Cookie: owner.cookie } })).status).toBe(200);
+    expect((await fetch(imageUrl, { headers: { Cookie: b.cookie } })).status).toBe(404);
+    expect((await request(owner, "/api/site/start", "POST", { exampleSlug: "bookclub", revision: site.revision })).status).toBe(409);
+    const slug = `start-${crypto.randomUUID().slice(0, 8)}`;
+    const published = await request(owner, "/api/site/publish", "POST", { content: { ...site.draft, name: "나의 작업실" }, revision: site.revision, slug });
+    expect(published.status).toBe(200); site = await published.json();
+    expect((await fetch(imageUrl)).status).toBe(200);
+    expect((await fetch(`${base}/${slug}`)).status).toBe(200);
+    await request(owner, "/api/site/unpublish", "POST", { revision: site.revision });
+  });
   it("인증 없이 초안 조회 차단, 다른 Origin 변경 요청 차단", async () => { expect((await fetch(`${base}/api/site`)).status).toBe(401); expect((await fetch(`${base}/api/site`, { method: "PUT", headers: { Origin: "https://evil.example", Authorization: `Bearer ${a.idToken}`, "Content-Type": "application/json" }, body: JSON.stringify({ content: EMPTY_CONTENT, revision: 0 }) })).status).toBe(403); });
   it("로그인·비밀번호 재설정 요청이 에뮬레이터에 실제로 전달됨", async () => {
     const login = await fetch("http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=demo-key", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: a.email, password: "LocalTesting123!", returnSecureToken: true }) }); expect(login.status).toBe(200);

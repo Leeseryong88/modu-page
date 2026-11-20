@@ -1,6 +1,6 @@
 import { EMPTY_CONTENT, type SiteContent, type SiteImage } from "./schema";
 
-// Editorial demos only: never seeded into Firebase or used as customer records.
+// Fictional examples. A user can explicitly copy one into their own private draft.
 export type BusinessExample = {
   audience: "개인·창작자" | "전문가" | "클래스·모임" | "매장·비즈니스";
   slug: string; category: string; purpose: string; summary: string; tone: string;
