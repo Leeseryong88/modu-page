@@ -1,0 +1,170 @@
+{
+  "date": "2026-11-21",
+  "generator": "image_gen",
+  "usage": "Distinct fictional example homepage photographs, not customer results.",
+  "processing": "Resized to 1440px wide and encoded as WebP quality 84 with sharp; no compositing of final assets.",
+  "assets": [
+    {
+      "key": "lawyer-hero",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: A calm contemporary independent law office in Seoul, wide view of a Korean male lawyer around 40 in a navy jacket sitting at a walnut desk, looking naturally toward the window, books with blank spines and linen curtains, approachable thoughtful mood, no courtroom symbols. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/lawyer-hero.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-1b006ca5-1061-4a79-9327-2308e9fe236f.png"
+    },
+    {
+      "key": "lawyer-consultation",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: A private consultation room in a small Seoul legal practice, two adults seated diagonally across a round walnut table, listening and discussing a closed cream folder. Only the side profile of a Korean man in navy tailoring and back of an adult client; natural respectful interaction. Wide view, warm neutral interior. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/lawyer-consultation.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-7ba607d2-e2c4-4e91-85c5-0fd8b9e486e5.png"
+    },
+    {
+      "key": "lawyer-documents",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Close editorial detail of a tidy legal professional desk: a hand using a pencil to mark non-readable abstract lines on paper, closed navy linen folders, simple reading glasses, dark wooden desk with slanting morning daylight. No names, signatures or seals. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/lawyer-documents.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-f357b2d5-0377-47cd-bde4-af09c860c628.png"
+    },
+    {
+      "key": "lawyer-library",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Quiet empty consultation office corner: floor to ceiling oak shelves with unlabelled books, a comfortable olive chair, walnut side table and warm wall light. Refined practical working office, architectural photography with deep navy and warm wood accents. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/lawyer-library.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-917c891b-b417-471a-9ac4-c06e65846366.png"
+    },
+    {
+      "key": "bookclub-hero",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: A welcoming evening reading club in a small Korean neighborhood book studio: four Korean adults casually discussing books around a large oak table, soft amber pendant lighting, plants, overflowing bookshelves with unreadable spines. Candid relaxed expressions, wide interior view, deep olive and warm cream palette. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/bookclub-hero.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-e3fbb370-34e3-4167-b967-6c2770126944.png"
+    },
+    {
+      "key": "bookclub-table",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Top-down close photograph of a reading club table with three open books showing only blurred non-readable text, cream note cards, pencils, ceramic tea cups and one hand placing a bookmark. Rich oak texture and warm afternoon light, quiet intimate atmosphere. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/bookclub-table.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-8c278a5c-6636-4313-8fbc-e05282061574.png"
+    },
+    {
+      "key": "bookclub-shelves",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Beautiful cozy neighborhood library shelves in Seoul, stacked books without readable titles, an amber glass vase with a branch, a small olive reading lamp and pale linen armchair beside a window. Soft dusk daylight, contemplative lifestyle photograph, no people. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/bookclub-shelves.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-0137a360-d8bc-4f7a-af14-7659fd3e2cda.png"
+    },
+    {
+      "key": "bookclub-meeting",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Wide architectural photograph of an empty community reading room prepared for six people: oval wooden table, six different comfortable chairs, small stacks of closed books, tea cups, warm pendant lights and large windows looking into a courtyard. Olive green door and warm ivory walls, welcoming genuine small space. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/bookclub-meeting.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-9c389eed-6c4b-46ae-af82-b47a6e77abb5.png"
+    },
+    {
+      "key": "tax-desk",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Close-up professional tax adviser workspace, a hand reviewing simple non-readable financial tables beside a compact calculator, cream stationery and a closed sage green folder on a light oak desk. Soft clear natural daylight, focused careful mood, no readable private information, no logos. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/tax-desk.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-0b2ddf6b-3bdc-400c-a5c1-41fb44e6407a.png"
+    },
+    {
+      "key": "tax-room",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Bright empty consultation room in a Seoul independent tax advisers office. Round pale oak table with two green upholstered chairs, slim notebook and glass carafe, clean bookshelves and a large window. Airy neutral daylight, natural plants, welcoming small office rather than corporate boardroom. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/tax-room.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-d35b240a-8a78-45fa-9778-de58d2560625.png"
+    },
+    {
+      "key": "portfolio-brand",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Premium graphic designer portfolio project photograph: a carefully art directed set of cobalt blue and ivory packaging boxes, minimal geometric printed cards, blank embossed stationery and tomato-red paper tags on a warm gray studio surface. Abstract shapes only, absolutely no words, typography or logos. Tangible paper textures, directional studio daylight. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/portfolio-brand.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-c4edd36e-82bb-4098-9b69-aeab2cf3aab7.png"
+    },
+    {
+      "key": "portfolio-book",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Editorial design portfolio photograph of an open large-format art book and two closed books, spreads using black and white architectural photographs and restrained red geometric blocks, no readable words, on a cream tabletop. Wide oblique angle, high quality paper binding detail, gentle shadows, professional print design presentation. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/portfolio-book.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-4ac68b51-76b7-439e-8cb7-27a91487f998.png"
+    },
+    {
+      "key": "portfolio-prints",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: A series of three different abstract geometric art prints displayed against a textured off-white studio wall: cobalt blue circle composition, tomato red layered paper shapes and charcoal flowing cut-paper curves. Real physical prints and sculptural paper, sophisticated fine art photography, no text or signatures. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/portfolio-prints.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-f1266d38-47ed-4e5b-adcf-3c73367ac086.png"
+    },
+    {
+      "key": "workshop-cards",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Finished handmade paper collage greeting cards neatly spread on a warm wooden craft table. Each card has a different abstract botanical arrangement in terracotta, cobalt, sage and ochre. Scissors and glue stick near the edge, beautiful tactile paper, overhead natural light, no written words. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/workshop-cards.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-b692a62d-b85e-474d-9fbd-dc60f8609823.png"
+    },
+    {
+      "key": "workshop-tools",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Close-up hands of an adult printmaker applying cobalt ink with a small brayer roller on a linocut plate, paper sheets and terracotta swatches nearby, authentic small studio workbench, realistic tool use and anatomy, intimate process photography with soft sunlight. No text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/workshop-tools.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-4a2c0b51-998b-4ae1-bae0-c1b42a103ad5.png"
+    },
+    {
+      "key": "workshop-display",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: A cozy art workshop display wall with six small framed paper collages, a wooden shelf of colorful handmade notebooks and a vase of dried branches. Warm cream studio wall, a sunlit worktable in foreground, hopeful and inviting, photographs of genuine handmade objects without text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/workshop-display.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-78fbe41b-1852-414f-92f4-7e35487d22d2.png"
+    },
+    {
+      "key": "photo-portrait",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Fine art environmental portrait of a Korean woman ceramic artist in her 30s sitting beside her pottery workbench in a quiet studio, natural thoughtful expression, textured linen clothes, gray ceramic vessels and cool window light. Photographer portfolio quality, authentic skin and hands, restrained cinematic color, no text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/photo-portrait.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-b9fb07a6-e7a8-4eef-a671-274f52a32457.png"
+    },
+    {
+      "key": "photo-architecture",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Fine art architectural photograph of a serene modern concrete gallery corridor opening to a small courtyard with one maple tree. Strong framing, long afternoon shadows and muted blue gray tones, empty space, exquisite materials and balanced perspective. This is a finished photographers portfolio image, no cameras or text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/photo-architecture.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-b40ecce7-8216-4958-9428-0f0264731a9c.png"
+    },
+    {
+      "key": "photo-product",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Sophisticated commercial still life photograph of an amber glass bottle with a completely blank label beside a sculptural pebble and clear glass on charcoal slate, dramatic natural side lighting and delicate warm reflections. Premium independent photographers portfolio image, no logos or readable text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/photo-product.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-ce677b8c-9c9a-48b2-988f-1b2f9c83b65f.png"
+    },
+    {
+      "key": "cafe-bakery",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Fresh bakery display in a small contemporary Korean neighborhood cafe: golden madeleines, fruit scones and a sliced lemon loaf on three ceramic plates over a warm wooden counter. Side window morning light, delicious realistic textures, simple cream linen, no text or signs. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/cafe-bakery.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-6f3aaf2a-4a0d-4ba8-94bb-b5a21e7d075f.png"
+    },
+    {
+      "key": "cafe-bar",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Candid close view of a barista pouring steamed milk into a ceramic espresso cup in a cozy Korean cafe, hands and torso only, stainless steel espresso machine blurred behind, warm wood and gentle morning light. Realistic latte art and hands, unbranded equipment, no text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/cafe-bar.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-7d278fda-53e9-4f21-b306-5b22bf6319d8.png"
+    },
+    {
+      "key": "moving-truck",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Carefully organized interior of an unbranded clean moving truck: wrapped furniture secured upright with professional straps, neatly stacked plain cardboard boxes and folded quilted moving blankets. Daylight at open truck doors, realistic safe placement, crisp trustworthy service photography, no people or text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/moving-truck.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-5e4f0cfc-d2a8-442a-b3f5-d58842f3d880.png"
+    },
+    {
+      "key": "moving-finished",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: A bright new Korean apartment living room after an organized move, a neatly positioned sofa protected with a folded blanket, a few plain cardboard boxes arranged by the wall, two uniformed moving workers seen from behind placing a light side table safely together. Calm daylight, realistic practical work, no logos or writing. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/moving-finished.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-b84673c5-5477-46e3-b566-2ce015534b0c.png"
+    },
+    {
+      "key": "florist-basket",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Luxurious but natural flower basket with ivory roses, soft lavender sweet peas, white ranunculus and light green foliage, woven rattan basket on a cream stone plinth in a small floral studio. Soft overcast daylight, delicate botanical detail, no tags or writing. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/florist-basket.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-8759c111-0a6f-4f75-8643-b7904210d9c0.png"
+    },
+    {
+      "key": "florist-installation",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: A modest beautiful floral arrangement for the entrance of a small Korean cafe: airy branches, white cosmos and pale peach flowers in three ceramic floor vases beside an oak doorway, morning sun and soft shadows, intimate local shop scale. No logos, signs or writing. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/florist-installation.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-741e7db9-1ec4-4c40-b507-d0e088a910ce.png"
+    },
+    {
+      "key": "interior-kitchen",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Architectural interior photograph of a completed compact Korean apartment kitchen, warm oak lower cabinets, ivory upper cabinets, creamy stone worktop, brushed steel fixtures and simple pendant lighting. Clean realistic livable design, daylight through a side window, no people, no text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/interior-kitchen.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-c29d7277-84fb-4429-bfc2-50ba6cf703a4.png"
+    },
+    {
+      "key": "interior-bathroom",
+      "prompt": "Use case: photorealistic-natural. Asset type: a distinct editorial photograph for a fictional Korean homepage example. Create ONE single landscape 3:2 photograph, not a collage or contact sheet. Scene: Architectural photograph of a completed small Korean apartment bathroom, warm gray textured tiles, oak vanity, rounded rectangular mirror with subtle backlight, brushed nickel fixtures and a single folded cream towel. Natural realistic proportions, immaculate craftsmanship, no people, no text. Premium natural editorial photography, believable material textures, realistic light, sophisticated composition that also works as a small thumbnail. Avoid readable words, watermarks, logos, website UI, borders, fake credentials, exaggerated stock poses. No other images embedded except the physical objects explicitly described.",
+      "path": "public/images/examples-expanded/interior-bathroom.webp",
+      "original": "C:\\Users\\GENTLEMONSTER\\.codex\\generated_images\\01a1f93f-8828-74e0-ac8b-d962fe071155\\exec-dfc48c45-f455-432c-aacc-2160693de1ee.png"
+    }
+  ]
+}

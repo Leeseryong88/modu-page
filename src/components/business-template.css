@@ -89,3 +89,5 @@
 @container business (max-width:699px){.region-top.layout-centered .business-hero-image{aspect-ratio:4/3}.region-top.layout-editorial .business-hero-image{order:-1;aspect-ratio:4/3}.region-top.layout-cover .business-hero{min-height:540px}.region-top.layout-cover .business-hero-copy{width:calc(100% - 40px);padding-block:60px}.region-bottom.layout-card .business-contact>.business-shell{padding:24px 20px}.region-bottom.layout-banner .inquiry-section{padding:24px 18px}.region-middle.layout-cards .business-services article{padding:22px}.region-middle.layout-gallery .business-projects{grid-template-columns:1fr}}
 
 .region-top:not(.is-editable),.region-top:not(.is-editable)>.region-content{display:contents}
+
+@container business (min-width:1000px){.is-example .region-middle.layout-list .business-projects,.is-example .region-middle.layout-cards .business-projects{grid-template-columns:repeat(3,minmax(0,1fr))}}

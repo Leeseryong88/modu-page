@@ -15,9 +15,9 @@ export const USE_CASES: UseCase[] = [
     description: "짧은 만남에서 다 보여주지 못한 작업과 이야기를 홈페이지에 담아보세요. 명함에 적힌 주소가 다음 대화의 시작이 됩니다.",
     benefits: [["인사에서 신뢰로", "명함에는 주소 하나, 홈페이지에는 소개와 작업 사진을 충분히."], ["설명에서 상담으로", "고객이 사례를 살펴본 뒤 필요한 내용을 문의로 남길 수 있어요."]],
     image: "/images/use-cases/business-card.webp", imageAlt: "작업실에서 고객에게 명함을 건네며 자신의 일을 소개하는 모습",
-    color: "#285343", soft: "#edf4ee", name: "온결 스튜디오", role: "공간을 만드는 사람들", tagline: "우리의 생활에 맞는, 편안한 공간.",
+    color: "#285343", soft: "#edf4ee", name: "온결인테리어", role: "공간을 만드는 사람들", tagline: "우리의 생활에 맞는, 편안한 공간.",
     about: "작은 공간의 변화부터 함께 생각합니다. 하는 일과 작업 과정을 살펴보고, 궁금한 점을 편하게 남겨주세요.", offerings: ["공간 소개", "최근 작업", "상담 문의"],
-    channel: "BUSINESS CARD", shareTitle: "반갑습니다. 온결 스튜디오입니다.", shareText: "저희가 만든 공간은 이 주소에서 더 보실 수 있어요.", steps: ["명함에 주소 담기", "사진과 소개 둘러보기", "상담 문의 남기기"],
+    channel: "BUSINESS CARD", shareTitle: "반갑습니다. 온결인테리어입니다.", shareText: "저희가 만든 공간은 이 주소에서 더 보실 수 있어요.", steps: ["명함에 주소 담기", "사진과 소개 둘러보기", "상담 문의 남기기"],
     inquiryTitle: "작은 매장 인테리어 상담", inquiryMessage: "명함을 보고 들어왔어요. 작업 사례와 비슷한 분위기의 공간을 만들고 싶습니다.", inquiryLabel: "상담 문의",
   },
   {

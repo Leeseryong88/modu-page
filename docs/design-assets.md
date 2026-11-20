@@ -58,3 +58,11 @@ Use case: photorealistic-natural. Asset type: supporting editorial photograph fo
 - 적용 파일: `public/images/site-creation-hero.webp` (1448 × 1086, 약 199 KB)
 - 전체 생성 프롬프트와 원본 위치: `docs/generated-hero-asset.json`
 - 히어로는 생성 이미지, 아래 예시 영역은 직접 열리는 실제 HTML 홈페이지의 가로 캐러셀입니다.
+
+## 2026-11-21: 예시별 사진 확장
+
+대표 이미지와 같은 사진을 상세 사례에 반복하던 구성을 제거했습니다. 총 10개 예시가 각각 대표 1장 + 상세 3장, 총 40개의 고유 이미지 경로를 사용합니다. 전문가(변호사)와 클래스·모임(독서 모임) 예시를 추가했습니다.
+
+새 사진 27장은 내장 이미지 생성 도구로 개별 제작하고 1440px WebP로 최적화했습니다(합계 약 4.25MiB). 최종 파일은 `public/images/examples-expanded/`, 전체 프롬프트와 원본 경로는 `generated-expanded-example-assets.json`에 있습니다. 기존 이미지 13장은 해당 예시의 주제에 맞춰 유지합니다. 생성 이미지와 예시는 실제 고객 사례가 아닙니다.
+
+사진 품질 검토용 모음: `screenshots/expanded-assets-review-1.jpg`, `expanded-assets-review-2.jpg`, `expanded-assets-review-3.jpg`. 실제 예시의 작업명과 설명도 각 상세 사진의 내용에 맞춰 작성했습니다.

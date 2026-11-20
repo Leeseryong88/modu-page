@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { useRef, useState } from "react";
+import { getExample, type BusinessExample } from "@/lib/examples";
 import { ArrowUpRight, Check, ChevronDown, Globe2, ImagePlus, MessageCircle, Smartphone } from "lucide-react";
 import { useAuth } from "./auth-provider";
 import { SiteHeader } from "./site-header";
 import { Button } from "./ui/button";
-import { ExampleCarousel } from "./example-carousel";
+import { SiteExamples } from "./site-examples";
+import { ExamplePreviewDialog } from "./example-preview-dialog";
 import { CompanyFooter } from "./company-footer";
-import { UseCaseTeaser } from "./use-case-teaser";
 import { AssemblyDemo } from "./assembly-demo";
 import "./landing.css";
 import "./inquiries.css";
@@ -24,36 +26,29 @@ const questions = [
 
 export function Landing() {
   const { user } = useAuth();
-  const createHref = user ? "/dashboard" : "/signup";
+  const createHref = user ? "/dashboard/editor" : "/signup";
+  const [previewExample, setPreviewExample] = useState<BusinessExample | null>(null);
+  const previewOpener = useRef<HTMLElement | null>(null);
+  function openExample(example: BusinessExample) { previewOpener.current = document.activeElement as HTMLElement; setPreviewExample(example); }
   return <div className="landing-page"><SiteHeader /><main id="main">
-    <section className="shop-hero marketing-shell">
+    <section id="intro" className="shop-hero marketing-shell">
       <div className="shop-hero-copy"><p className="section-label">나의 일도, 취향도, 새로운 시작도.</p>
         <h1>내 이야기가 시작되는<br /><em>나만의 홈페이지.</em></h1>
         <p className="shop-hero-description">포트폴리오, 전문 서비스, 클래스, 그리고 우리 가게까지.<br className="wide-only" /> 세 부분을 조립해 <strong>나를 보여주는 공간</strong>을 만들어요.</p>
-        <div className="shop-hero-actions"><Button asChild><Link href={createHref}>내 홈페이지 만들기</Link></Button><Link className="marketing-text-link" href="#examples">어떤 페이지를 만들 수 있나요?</Link></div>
+        <div className="shop-hero-actions"><Button asChild><Link href={createHref}>내 홈페이지 만들기</Link></Button><a className="marketing-text-link" href="#examples">어떤 페이지를 만들 수 있나요?</a></div>
         <p className="hero-reassurance"><Check size={16} />코딩 없이 · 세 부분을 조립하고 · 내 주소로 공유</p>
       </div>
-      <div className="inclusive-hero-art" aria-label="포트폴리오, 전문가, 클래스 홈페이지 예시"><span className="inclusive-orbit" aria-hidden="true" /><Link href="/examples/portfolio" className="inclusive-main-card"><div className="inclusive-browser"><i /><i /><i /><span>하늘의 포트폴리오</span></div><img src="/images/use-cases/creative-work.webp" alt="종이와 오브제로 펼쳐낸 디자이너의 창작 작업" width={1440} height={960} fetchPriority="high" /><div><span>DESIGNER · MAKER · EXPLORER</span><h2>작은 발견이,<br />나만의 작업으로.</h2><p>김하늘의 포트폴리오 <ArrowUpRight size={17} /></p></div></Link><Link href="/examples/professional" className="inclusive-side-card inclusive-pro"><img src="/images/use-cases/professional.webp" alt="밝은 공간에서 이야기를 나누는 전문가와 상담자" width={600} height={400} /><div><span>전문가 · 상담</span><strong>첫 상담의 시작을<br />편안하게.</strong><ArrowUpRight size={17} /></div></Link><Link href="/examples/workshop" className="inclusive-side-card inclusive-class"><img src="/images/use-cases/workshop.webp" alt="종이 공예를 함께 즐기는 클래스 참여자들" width={600} height={400} /><div><span>클래스 · 모임</span><strong>좋아하는 일을,<br />함께하는 시간.</strong><ArrowUpRight size={17} /></div></Link><span className="inclusive-art-note"><Check size={14} />서로 다른 이야기, 서로 다른 홈페이지.</span></div>
+      <div className="inclusive-hero-art" aria-label="포트폴리오, 전문가, 클래스 홈페이지 예시"><span className="inclusive-orbit" aria-hidden="true" /><button type="button" onClick={() => openExample(getExample("portfolio")!)} aria-label="김하늘 포트폴리오 예시 크게 보기" className="inclusive-main-card"><div className="inclusive-browser"><i /><i /><i /><span>하늘의 포트폴리오</span></div><img src="/images/use-cases/creative-work.webp" alt="종이와 오브제로 펼쳐낸 디자이너의 창작 작업" width={1440} height={960} fetchPriority="high" /><div><span>DESIGNER · MAKER · EXPLORER</span><h2>작은 발견이,<br />나만의 작업으로.</h2><p>김하늘의 포트폴리오 <ArrowUpRight size={17} /></p></div></button><button type="button" onClick={() => openExample(getExample("professional")!)} aria-label="서윤 세무사 예시 크게 보기" className="inclusive-side-card inclusive-pro"><img src="/images/use-cases/professional.webp" alt="밝은 공간에서 이야기를 나누는 전문가와 상담자" width={600} height={400} /><div><span>전문가 · 상담</span><strong>첫 상담의 시작을<br />편안하게.</strong><ArrowUpRight size={17} /></div></button><button type="button" onClick={() => openExample(getExample("workshop")!)} aria-label="주말의 작업실 예시 크게 보기" className="inclusive-side-card inclusive-class"><img src="/images/use-cases/workshop.webp" alt="종이 공예를 함께 즐기는 클래스 참여자들" width={600} height={400} /><div><span>클래스 · 모임</span><strong>좋아하는 일을,<br />함께하는 시간.</strong><ArrowUpRight size={17} /></div></button><span className="inclusive-art-note"><Check size={14} />서로 다른 이야기, 서로 다른 홈페이지.</span></div>
     </section>
     <div className="benefit-strip marketing-shell"><p><ImagePlus size={20} /><span>사진과 소개로 <strong>나를 알리고</strong></span></p><p><Globe2 size={20} /><span>하나의 주소로 <strong>쉽게 공유하고</strong></span></p><p><MessageCircle size={20} /><span>문의 양식과 전화로 <strong>기회를 만나세요</strong></span></p></div>
 
-    <UseCaseTeaser />
-
-    <section id="examples" className="examples-section"><div className="marketing-shell">
-      <div className="marketing-section-head"><div><p className="section-label">WEBSITE COLLECTION</p><h2>누구에게나,<br />자기다운 페이지가 있어요.</h2></div><p>나에게 맞는 용도를 골라보세요.<br />서로 다른 조합으로 만든 8개의 홈페이지를 둘러볼 수 있어요.</p></div>
-      <ExampleCarousel />
-      <p className="example-disclosure">이해를 돕기 위해 만든 가상의 인물과 공간을 담은 예시입니다. 사진과 정보는 데모용이에요.</p>
-    </div></section>
+    <SiteExamples onPreview={openExample} />
 
     <section id="how-it-works" className="make-section"><div className="marketing-shell"><div className="marketing-section-head"><div><p className="section-label">처음이어도 괜찮아요</p><h2>세 부분을 눌러,<br />내 이야기로 완성하세요.</h2></div><p>화면을 누르고, 열린 창에서 내용을 채우세요.<br />작성 중에는 임시저장하고 나중에 이어갈 수 있어요.</p></div><AssemblyDemo />
       <ol className="making-steps"><li><span>01 · 조립하기</span><h3>각 부분의 모양을 골라요</h3><p>상단·중단·하단마다 4가지 템플릿.<br />마음에 드는 조합으로 시작해요.</p></li><li><span>02 · 이야기 채우기</span><h3>눌러서 나답게 바꿔요</h3><p>각 부분을 눌러 사진과 소개를 넣고<br />적용한 뒤 PC·휴대폰 화면을 확인해요.</p></li><li><span>03 · 저장하고 공개하기</span><h3>내 주소로 세상과 만나요</h3><p>초안을 저장하고, 준비되면 공개해요.<br />명함·SNS·이력서에 주소를 담으세요.</p></li></ol>
     </div></section>
 
-    <section className="contact-story marketing-shell"><div className="contact-story-copy"><p className="section-label">홈페이지와 함께, 별도의 문의함까지</p><h2>좋은 기회가,<br />다음 대화로 이어지도록.</h2><p>방문자는 홈페이지에 메시지를 남기고,<br />나는 문의함에서 모아 확인해요.</p><ul><li><Check size={18} />협업·상담·참여 문의를 한곳에서</li><li><Check size={18} />새 문의·상담 중·완료 상태별 집계</li><li><Check size={18} />연락처 확인과 나만 보는 상담 메모</li></ul><p className="contact-method-note">홈페이지 편집과 따로 관리해요. 전화와 카카오톡도 연결할 수 있어요.</p><Link href="/examples/portfolio#inquiry" className="marketing-text-link">예시 홈페이지에서 문의 양식 체험하기</Link></div>
-      <div className="landing-inbox-demo" aria-label="문의함 기능 미리보기"><div className="inbox-demo-heading"><div><span>기능 미리보기</span><h3>내 홈페이지 문의함</h3></div><MessageCircle size={25} strokeWidth={1.4} /></div><div className="inbox-demo-counts"><div><span>전체 문의</span><strong>3</strong></div><div><span>새 문의</span><strong>1</strong></div><div><span>상담 중</span><strong>1</strong></div><div><span>완료</span><strong>1</strong></div></div><div className="inbox-demo-row"><span className="inquiry-badge status-new">새 문의</span><strong>브랜드 디자인 협업 제안</strong><span>오늘</span></div><div className="inbox-demo-row"><span className="inquiry-badge status-progress">상담 중</span><strong>주말 클래스 참여 문의</strong><span>어제</span></div><div className="inbox-demo-row"><span className="inquiry-badge status-done">완료</span><strong>전문 상담 일정 문의</strong><span>어제</span></div><p>설명을 위한 예시 화면이며 실제 접수 내역이 아닙니다.</p></div>
-    </section>
-
     <section id="questions" className="faq-section marketing-shell"><div><p className="section-label">시작 전 궁금한 점</p><h2>시작하는 누구나<br />궁금할 이야기.</h2></div><div className="faq-list">{questions.map(question => <details key={question.title}><summary>{question.title}<ChevronDown size={20} /></summary><p>{question.answer}</p></details>)}</div></section>
     <section className="marketing-end"><div className="marketing-shell"><div><p>내가 하는 일, 좋아하는 것, 함께하고 싶은 이야기.</p><h2>나만의 첫 홈페이지,<br />여기서 시작하세요.</h2></div><div><Button asChild><Link href={createHref}>내 홈페이지 만들기</Link></Button><span><Smartphone size={16} />휴대폰에서도 나답게, 보기 좋게.</span></div></div></section>
-  </main><CompanyFooter /></div>;
+  </main><CompanyFooter /><ExamplePreviewDialog example={previewExample} onClose={() => setPreviewExample(null)} opener={previewOpener} createHref={createHref} /></div>;
 }

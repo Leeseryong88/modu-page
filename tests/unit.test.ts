@@ -1,8 +1,29 @@
 import { describe, expect, it } from "vitest";
 import { COLORS } from "@/lib/brand";
 import { EXAMPLES } from "@/lib/examples";
+import { getExampleStory } from "@/lib/example-stories";
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import { DEFAULT_LAYOUT, SECTION_TEMPLATES, sectionForField } from "@/lib/section-layouts";
 import { contentSchema, EMPTY_CONTENT, imageIds, kakaoUrl, publishIssues, safeHttpUrl, slugError } from "@/lib/schema";
+describe("예시 홈페이지의 콘텐츠 품질", () => {
+  it("네 카테고리마다 둘 이상의 홈페이지를 제공한다", () => {
+    for (const audience of ["개인·창작자", "전문가", "클래스·모임", "매장·비즈니스"]) expect(EXAMPLES.filter(example => example.audience === audience).length).toBeGreaterThanOrEqual(2);
+  });
+  it.each(EXAMPLES)("$slug의 대표·상세 사진은 서로 다르고 실제 파일과 활용 설명이 존재한다", example => {
+    const sources = [example.imageSources[example.content.hero!.id], ...example.content.projects.map(project => example.imageSources[project.image!.id])];
+    expect(example.content.projects.length).toBeGreaterThanOrEqual(3);
+    expect(new Set(sources).size).toBe(sources.length);
+    for (const source of sources) expect(existsSync(resolve("public", source.slice(1)))).toBe(true);
+    const story = getExampleStory(example);
+    expect(story.scene.name).toBe(example.content.name);
+    expect(story.usage.length).toBeGreaterThan(10);
+  });
+  it("서로 다른 예시의 대표·상세 사진도 돌려 쓰지 않는다", () => {
+    const sources = EXAMPLES.flatMap(example => Object.values(example.imageSources));
+    expect(new Set(sources).size).toBe(sources.length);
+  });
+});
 describe("공개 입력 검증", () => {
   it("개인 페이지는 전화번호와 지역을 공개하지 않고도 게시할 수 있다", () => {
     const content = { ...EMPTY_CONTENT, name: "나의 포트폴리오", industry: "이력서·포트폴리오" as const, tagline: "작업과 경험", hero: { id: crypto.randomUUID(), width: 1200, height: 800 } };
