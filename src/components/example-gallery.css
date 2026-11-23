@@ -6,3 +6,5 @@
 @media(prefers-reduced-motion:reduce){.ex-filters button{transition:none}.ex-card-track{scroll-behavior:auto}}
 
 .ex-use-example{display:flex;align-items:center;justify-content:center;margin-top:12px;min-height:44px;background:var(--case-color);color:white;border-radius:5px;padding:10px 15px;font-size:14px}.ex-use-example:hover{filter:brightness(.92)}
+.ex-expand{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin-top:28px;border:1px solid #c2d0b9;border-radius:8px;background:#fff;color:#285343;font-size:15px;font-weight:550}.ex-expand:hover{background:#eef3ea}.ex-expand svg{transition:transform .18s}.ex-expand[aria-expanded=true] svg{transform:rotate(180deg)}
+@media(prefers-reduced-motion:reduce){.ex-expand svg{transition:none}}
