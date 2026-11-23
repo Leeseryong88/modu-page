@@ -10,11 +10,12 @@ import { SectionTemplatePicker } from "./section-template-picker";
 import { Button } from "./ui/button";
 
 export type SidebarTab = "templates" | "images" | "text";
-export function EditorSidebar({ content, ownerId, tab, setTab, open, setOpen, disabled, images, selectedImage, onSelect, onUpload, onLayout, onEdit, onBusy, loading, libraryError, hasMore, loadMore }: {
+const TEXT_JUMP = { top: "name", middle: "about", bottom: "phone" } as const;
+export function EditorSidebar({ content, ownerId, tab, setTab, open, setOpen, disabled, images, selectedImage, onSelect, onUpload, onLayout, onJump, onBusy, loading, libraryError, hasMore, loadMore }: {
   content: SiteContent; ownerId: string; tab: SidebarTab; setTab: (tab: SidebarTab) => void;
   open: boolean; setOpen: (open: boolean) => void; disabled: boolean;
   images: SiteImage[]; selectedImage: SiteImage | null; onSelect: (image: SiteImage) => void; onUpload: (image: SiteImage) => void;
-  onLayout: (layout: SiteContent["layout"]) => void; onEdit: (section: SiteSection) => void;
+  onLayout: (layout: SiteContent["layout"]) => void; onJump: (path: string) => void;
   onBusy: (delta: number) => void; loading: boolean; libraryError: string; hasMore: boolean; loadMore: () => void;
 }) {
   const [region, setRegion] = useState<SiteSection>("top");
@@ -40,7 +41,7 @@ export function EditorSidebar({ content, ownerId, tab, setTab, open, setOpen, di
   return <aside className={`editor-sidebar ${open ? "sidebar-open" : ""}`} aria-label="홈페이지 편집 도구">
     <nav className="sidebar-tabs" aria-label="편집 도구 선택">{([
       ["templates", "템플릿", Layers3], ["images", "내 이미지", ImagePlus], ["text", "내용", Pencil],
-    ] as const).map(([value, label, Icon]) => <button type="button" key={value} aria-pressed={tab === value && open} onClick={() => { setTab(value); setOpen(tab !== value || !open); }}><Icon size={18} />{label}</button>)}</nav>
+    ] as const).map(([value, label, Icon]) => <button type="button" key={value} aria-pressed={tab === value} onClick={() => { setTab(value); setOpen(tab !== value || !open); }}><Icon size={18} />{label}</button>)}</nav>
     <div className="sidebar-body">
       <div className="sidebar-heading"><div><span>나만의 홈페이지 만들기</span><h2>{tab === "templates" ? "어떤 모습으로 만들까요?" : tab === "images" ? "내 사진으로 채워보세요" : "내 이야기를 담아보세요"}</h2></div><button className="sidebar-close" onClick={() => setOpen(false)} aria-label="편집 도구 접기"><X size={20} /></button></div>
       {tab === "templates" && <fieldset disabled={disabled} className="sidebar-fieldset"><p className="sidebar-help">영역을 고르고 마음에 드는 모양을 누르세요. 내용과 사진은 그대로 유지돼요.</p><div className="sidebar-regions" role="group" aria-label="템플릿 영역">{(["top", "middle", "bottom"] as const).map(key => <button type="button" key={key} aria-pressed={region === key} onClick={() => setRegion(key)}>{SECTION_INFO[key].label}</button>)}</div><SectionTemplatePicker section={region} layout={content.layout} onChange={onLayout} /></fieldset>}
@@ -58,7 +59,7 @@ export function EditorSidebar({ content, ownerId, tab, setTab, open, setOpen, di
         {(hasMore || libraryError) && <Button variant="outline" className="full-width" disabled={loading} onClick={loadMore}>{loading ? "불러오는 중…" : libraryError ? "다시 불러오기" : "사진 더 보기"}</Button>}
         {loading && <p role="status" className="sidebar-help">사진을 불러오고 있어요…</p>}
       </>}
-      {tab === "text" && <><p className="sidebar-help">이름, 소개 글, 작업 설명과 연락처를 수정해요. 홈페이지에서도 영역의 ‘내용 편집’을 누를 수 있어요.</p><div className="sidebar-content-buttons">{(["top", "middle", "bottom"] as const).map(key => <button disabled={disabled} key={key} onClick={() => onEdit(key)}><strong>{SECTION_INFO[key].label} 내용 편집</strong><span>{SECTION_INFO[key].contents}</span><Pencil size={17} /></button>)}</div></>}
+      {tab === "text" && <><p className="sidebar-help">이름, 소개, 연락처는 미리보기 화면에서 바로 고칠 수 있어요. 아래를 누르면 그 위치로 이동해요.</p><div className="sidebar-content-buttons">{(["top", "middle", "bottom"] as const).map(key => <button disabled={disabled} key={key} onClick={() => onJump(TEXT_JUMP[key])}><strong>{SECTION_INFO[key].label}으로 이동</strong><span>{SECTION_INFO[key].contents}</span><Pencil size={17} /></button>)}</div></>}
     </div>
   </aside>;
 }

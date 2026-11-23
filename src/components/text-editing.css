@@ -1,0 +1,28 @@
+.business-site.photo-edit-mode .site-region.is-editable, .business-site.text-edit-mode .site-region.is-editable { position: relative; padding-top: 45px; }
+.region-caption { position: absolute; top: 0; left: 0; right: 0; z-index: 6; height: 45px; padding: 0 20px; display: flex; gap: 13px; align-items: center; background: #f1f6f1; border-bottom: 1px dashed #c7d7ca; color: #355d43; font-size: 14px; pointer-events: none; }
+.region-caption strong { font-weight: 700; }
+.region-caption span { font-size: 13px; color: #667f6d; }
+.inline-field { display: block; width: 100%; min-width: 0; }
+.inline-field input, .inline-field textarea, .inline-field select { width: 100%; max-width: 100%; font: inherit; letter-spacing: inherit; line-height: inherit; color: #24362c; background: #ffffffeb; border: 1px dashed #8eaa96; border-radius: 4px; padding: 6px 8px; }
+.inline-field textarea { display: block; resize: vertical; min-height: 96px; }
+.inline-field input:focus, .inline-field textarea:focus, .inline-field select:focus { outline: 2px solid #327e5d; border-style: solid; }
+.inline-field-error { display: block; margin-top: 4px; color: #9b3b32; font-size: 13px; font-weight: 500; letter-spacing: 0; line-height: 1.5; }
+.inline-label-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-start; }
+.inline-label-row > .inline-field { flex: 1 1 160px; }
+.text-edit-mode .business-brand-wrap { display: flex; align-items: center; gap: 10px; min-width: 0; max-width: 70%; }
+.text-edit-mode .inline-brand { display: block; flex: 1 1 auto; max-width: min(280px, 100%); }
+.inline-item-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.inline-item-tools button, .inline-add, .inline-remove { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; border: 1px solid #cbdacb; background: #f7faf6; color: #285343; border-radius: 4px; padding: 8px 12px; font-size: 14px; }
+.inline-item-tools button { min-width: 40px; padding-inline: 8px; }
+.inline-add { margin-top: 14px; }
+.inline-extra { margin-top: 22px; display: grid; gap: 14px; padding: 16px; background: #f7faf6; border: 1px dashed #c5d4c6; border-radius: 8px; color: #24362c; }
+.inline-extra-label, .inquiry-inline legend { font-size: 13px; font-weight: 650; color: #3d5648; }
+.inquiry-inline { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.inquiry-inline label { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; color: #24362c; }
+.business-contact dd .inline-field { min-width: 0; }
+.region-middle.layout-list .business-services .inline-item-tools { grid-column: 1 / -1; }
+.text-edit-mode .region-top.layout-cover .inline-field { pointer-events: auto; }
+.text-edit-mode .business-hero h1 .inline-field input { font-size: inherit; font-weight: inherit; }
+.text-edit-mode .business-about > .inline-field { grid-column: 2; grid-row: 1 / span 2; max-width: 720px; }
+@container business (max-width: 699px) { .text-edit-mode .business-about > .inline-field { grid-column: auto; grid-row: auto; } }
+.photo-slot:focus { outline: 3px solid #327e5d; outline-offset: -3px; }

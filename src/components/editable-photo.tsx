@@ -12,8 +12,8 @@ export type PhotoEditing = {
   onAdjust: (target: ImageTarget, image: SiteImage, ratio: number) => void;
   onChoose: () => void;
 };
-export function EditablePhoto({ target, image, src, label, className = "", position = "center", editing }: {
-  target: ImageTarget; image: SiteImage | null; src?: string; label: string; className?: string; position?: string; editing: PhotoEditing;
+export function EditablePhoto({ target, image, src, label, className = "", position = "center", editing, editPath }: {
+  target: ImageTarget; image: SiteImage | null; src?: string; label: string; className?: string; position?: string; editing: PhotoEditing; editPath?: string;
 }) {
   const [over, setOver] = useState(false);
   const frame = useRef<HTMLDivElement>(null);
@@ -24,7 +24,7 @@ export function EditablePhoto({ target, image, src, label, className = "", posit
     editing.onAdjust(target, image, rect.width / rect.height);
   }
   return <div ref={frame} className={`photo-slot ${className} ${over ? "drag-over" : ""} ${editing.selectedImage ? "accepting-photo" : ""}`}
-    data-photo-target={target}
+    data-photo-target={target} data-edit-path={editPath} tabIndex={editPath ? -1 : undefined}
     onDragOver={event => { if (accepts(event)) { event.preventDefault(); event.dataTransfer.dropEffect = "copy"; setOver(true); } }}
     onDragLeave={event => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOver(false); }}
     onDrop={event => {
@@ -37,7 +37,7 @@ export function EditablePhoto({ target, image, src, label, className = "", posit
     <button type="button" className="photo-slot-select" disabled={editing.disabled} aria-label={editing.selectedImage ? `${label}에 선택한 사진 넣기` : `${label} ${image ? "구도 조절" : "사진 선택"}`} onClick={() => {
       if (editing.selectedImage) editing.onPlace(target, editing.selectedImage);
       else if (image) adjust(); else editing.onChoose();
-    }}><span>{editing.selectedImage ? "여기에 사진 넣기" : image ? "사진 위치·확대 조절" : "사진을 끌어놓거나 눌러 선택"}</span></button>
+    }}><span>{editing.selectedImage ? "여기에 사진 넣기" : image ? "사진 위치·확대 조절" : target === "logo" ? "로고 선택" : "사진을 끌어놓거나 눌러 선택"}</span></button>
     {image && <button type="button" className="photo-slot-adjust" disabled={editing.disabled} onClick={adjust} aria-label={`${label} 위치와 크기 조절`}><SlidersHorizontal size={15} />구도 조절</button>}
   </div>;
 }

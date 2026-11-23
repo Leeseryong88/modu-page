@@ -5,16 +5,16 @@ import type { ImageCrop, SiteImage } from "@/lib/schema";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
 
-export function ImageCropDialog({ image, src, ratio, position, logo, onApply, onClose }: {
+export function ImageCropDialog({ image, src, ratio, position, logo, onApply, onClose, restoreFocus }: {
   image: SiteImage; src: string; ratio: number; position: string; logo: boolean;
-  onApply: (crop: ImageCrop) => void; onClose: () => void;
+  onApply: (crop: ImageCrop) => void; onClose: () => void; restoreFocus: () => void;
 }) {
   const initial = image.crop ?? defaultCrop(position, logo ? "contain" : "cover");
   const [crop, setCrop] = useState<ImageCrop>(initial);
   const [loaded, setLoaded] = useState(false);
   const [failed, setFailed] = useState(false);
   const drag = useRef<{ x: number; y: number; width: number; height: number; crop: ImageCrop; pointer: number } | null>(null);
-  return <Dialog open onOpenChange={open => { if (!open) onClose(); }}><DialogContent className="image-crop-dialog">
+  return <Dialog open onOpenChange={open => { if (!open) onClose(); }}><DialogContent className="image-crop-dialog" onCloseAutoFocus={event => { event.preventDefault(); restoreFocus(); }}>
     <DialogTitle>사진의 위치와 크기</DialogTitle>
     <DialogDescription>사진을 끌어 구도를 맞추세요. 원본은 그대로 보관하며, 현재 화면 비율로 보여드려요.</DialogDescription>
     <div className="crop-preview" style={{ aspectRatio: ratio, maxWidth: `min(100%, ${Math.max(180, 320 * ratio)}px)` }}
