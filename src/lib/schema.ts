@@ -11,7 +11,12 @@ export function kakaoUrl(value: string) {
   return protocol === "https:" && ["pf.kakao.com", "open.kakao.com", "qr.kakao.com"].includes(hostname);
 }
 const url = text(2000).refine(v => !v || safeHttpUrl(v), "http:// 또는 https://로 시작하는 올바른 주소를 입력해주세요.");
-export const imageSchema = z.object({ id: z.string().uuid(), width: z.number().int().positive(), height: z.number().int().positive() }).strict();
+export const imageCropSchema = z.object({
+  x: z.number().min(0).max(100), y: z.number().min(0).max(100),
+  zoom: z.number().min(1).max(3), fit: z.enum(["cover", "contain"]),
+}).strict();
+export type ImageCrop = z.infer<typeof imageCropSchema>;
+export const imageSchema = z.object({ id: z.string().uuid(), width: z.number().int().positive(), height: z.number().int().positive(), crop: imageCropSchema.optional() }).strict();
 export const contentSchema = z.object({
   name: text(30), industry: z.union([z.enum(INDUSTRIES), z.literal("")]), region: text(50), tagline: text(80), about: text(1000),
   phone: text(24).refine(v => !v || /^\+?[\d\s()-]+$/.test(v) && v.replace(/\D/g, "").length >= 8 && v.replace(/\D/g, "").length <= 15, "전화번호를 확인해주세요."),

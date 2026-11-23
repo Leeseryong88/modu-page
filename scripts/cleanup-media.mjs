@@ -18,7 +18,7 @@ for (const item of (await db.collectionGroup("media").get()).docs) {
   if (!data.createdAt || new Date(data.createdAt).getTime() >= cutoff) continue;
   const eligible = await db.runTransaction(async tx => {
     const [siteDoc, mediaDoc] = await tx.getAll(parent, item.ref);
-    if (!mediaDoc.exists) return false;
+    if (!mediaDoc.exists || mediaDoc.data()?.library === true) return false;
     const site = siteDoc.data();
     if (referenced(site?.draft, item.id) || referenced(site?.published, item.id)) return false;
     // Publishing/saving reads this media document in its transaction, so either

@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     // A server-created object has no Firebase download token. ifGenerationMatch
     // prevents a racing request from overwriting an already referenced photo.
     await bucket.file(`users/${uid}/media/${id}`).save(processed.data, { resumable: false, preconditionOpts: { ifGenerationMatch: 0 }, metadata: { contentType: "image/webp", cacheControl: "private, no-store" } });
-    await docRef.create({ state: "ready", image, createdAt: new Date().toISOString() });
+    await docRef.create({ state: "ready", image, library: true, createdAt: new Date().toISOString() });
     return NextResponse.json(image, { headers: noStore });
   } catch (e) { return errorResponse(e); }
 }

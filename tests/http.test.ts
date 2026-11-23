@@ -22,6 +22,28 @@ beforeAll(async () => {
   [a, b] = await Promise.all([account(), account()]);
 });
 describe("브라우저가 사용하는 실제 HTTP 흐름", () => {
+  it("이미지 보관함은 소유자만 조회하며 미배치 사진은 공개하지 않는다", async () => {
+    const owner = await account();
+    const image = await upload(owner);
+    expect((await fetch(`${base}/api/media`)).status).toBe(401);
+    const list = await request(owner, "/api/media");
+    expect(list.status).toBe(200); expect(list.headers.get("cache-control")).toContain("no-store");
+    expect((await list.json()).images).toContainEqual(image);
+    expect((await (await request(b, `/api/media?ownerId=${owner.localId}`)).json()).images).not.toContainEqual(image);
+    expect((await request(owner, "/api/media?cursor=../invalid")).status).toBe(400);
+    const url = `${base}/api/media/${owner.localId}/${image.id}`;
+    expect((await fetch(url)).status).toBe(404);
+    expect((await fetch(url, { headers: { Cookie: owner.cookie } })).status).toBe(200);
+    expect((await fetch(url, { headers: { Cookie: b.cookie } })).status).toBe(404);
+    const content = { ...EMPTY_CONTENT, hero: { ...image, crop: { x: 25, y: 75, zoom: 2, fit: "cover" } } };
+    const savedResponse = await request(owner, "/api/site", "PUT", { content, revision: 0 });
+    expect(savedResponse.status).toBe(200); const saved = await savedResponse.json();
+    expect((await (await request(owner, "/api/site")).json()).draft.hero.crop).toEqual(content.hero.crop);
+    expect((await request(owner, "/api/site", "PUT", { content: { ...content, hero: { ...image, crop: { ...content.hero.crop, zoom: 20 } } }, revision: saved.revision })).status).toBe(400);
+    const removed = await request(owner, "/api/site", "PUT", { content: EMPTY_CONTENT, revision: saved.revision });
+    expect(removed.status).toBe(200);
+    expect((await (await request(owner, "/api/media")).json()).images).toContainEqual(image);
+  });
   it("예시 복사는 인증·Origin·소유권을 확인하고 저장·공개한 사진을 제공한다", async () => {
     const owner = await account();
     const payload = { exampleSlug: "workshop", revision: 0 };

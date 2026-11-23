@@ -33,6 +33,10 @@ export async function saveSite(uid: string, content: SiteContent, revision: numb
       if (slugDoc.exists && slugDoc.data()?.ownerId !== uid) throw new AppError(409, "이미 사용 중인 주소예요. 다른 주소를 입력해주세요.", [{ path: "slug", message: "이미 사용 중인 주소예요.", step: 4 }]);
     }
     await verifyImages(tx, uid, content);
+    // Keep previously used photos in the owner's library when a placement is
+    // removed. Read before writing so cleanup and save serialize safely.
+    const retainedIds = [...new Set([...imageIds(site.draft), ...imageIds(content)])];
+    const retainedDocs = retainedIds.length ? await tx.getAll(...retainedIds.map(id => db.doc(`sites/${uid}/media/${id}`))) : [];
     const now = new Date().toISOString();
     const updated: SiteRecord = { ...site, ownerId: uid, draft: content, draftSlug: publishSlug ?? site.slug ?? draftSlug ?? site.draftSlug ?? "", revision: site.revision + 1, savedAt: now };
     if (publishSlug !== undefined) {
@@ -42,6 +46,7 @@ export async function saveSite(uid: string, content: SiteContent, revision: numb
       tx.set(db.doc(`slugs/${publishSlug}`), { ownerId: uid });
       tx.set(db.doc(`publicSites/${publishSlug}`), publicSite);
     }
+    for (const doc of retainedDocs) if (doc.exists && doc.data()?.state === "ready") tx.update(doc.ref, { library: true });
     tx.set(siteRef, updated);
     return updated;
   });

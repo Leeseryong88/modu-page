@@ -7,6 +7,44 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { DEFAULT_LAYOUT, SECTION_TEMPLATES, sectionForField } from "@/lib/section-layouts";
 import { contentSchema, EMPTY_CONTENT, imageIds, kakaoUrl, publishIssues, safeHttpUrl, slugError } from "@/lib/schema";
+import { defaultCrop, dragCrop, imageStyle, placeImage } from "@/lib/image-layout";
+
+describe("사진 배치와 구도 호환성", () => {
+  const image = { id: "00000000-0000-4000-8000-000000000001", width: 1200, height: 800 };
+  it("구도 설정이 없는 기존 사진과 위·아래 정렬을 변경하지 않는다", () => {
+    const legacy = { ...EMPTY_CONTENT, hero: image, heroPosition: "bottom" as const };
+    expect(contentSchema.parse(legacy)).toEqual(legacy);
+    expect(imageStyle(image, "bottom")).toEqual({ objectPosition: "bottom" });
+    expect(defaultCrop("bottom").y).toBe(100);
+  });
+  it("같은 사진의 배치별 구도를 독립적으로 저장하고 기존 콘텐츠를 보존한다", () => {
+    const original = { ...EMPTY_CONTENT, hero: image, logo: image, name: "원래 이름" };
+    const crop = { x: 20, y: 80, zoom: 2, fit: "cover" as const };
+    const changed = placeImage(original, "hero", { ...image, crop });
+    expect(changed.hero?.crop).toEqual(crop); expect(changed.logo).toEqual(image);
+    expect(original.hero).toEqual(image); expect(changed.name).toBe(original.name);
+    expect(contentSchema.parse(changed)).toEqual(changed);
+    expect(imageIds(changed)).toEqual([image.id]);
+  });
+  it.each([{ zoom: 0 }, { zoom: 4 }, { x: -1 }, { y: 101 }, { fit: "fill" }, { zoom: NaN }])("비정상 구도를 저장하지 않는다: %o", invalid => {
+    expect(contentSchema.safeParse({ ...EMPTY_CONTENT, hero: { ...image, crop: { ...defaultCrop(), ...invalid } } }).success).toBe(false);
+  });
+  it("사진 순서가 달라도 고유 ID로 교체하고 6개 제한을 지킨다", () => {
+    const a = { id: crypto.randomUUID(), title: "A", description: "설명", image: null };
+    const b = { id: crypto.randomUUID(), title: "B", description: "", image: null };
+    const changed = placeImage({ ...EMPTY_CONTENT, projects: [b, a] }, `project:${a.id}`, image);
+    expect(changed.projects[0].image).toBeNull(); expect(changed.projects[1]).toEqual({ ...a, image });
+    const full = { ...EMPTY_CONTENT, projects: Array.from({ length: 6 }, () => ({ ...a, id: crypto.randomUUID() })) };
+    expect(placeImage(full, "new-project", image)).toBe(full);
+  });
+  it("끌기 이동을 비율로 환산하고 사진 끝을 넘기지 않는다", () => {
+    const crop = { ...defaultCrop(), zoom: 2 };
+    const moved = dragCrop(crop, image, 300, 200, 30, -20);
+    expect(moved.x).toBe(40); expect(moved.y).toBe(60);
+    expect(dragCrop(crop, image, 300, 200, 9999, -9999)).toMatchObject({ x: 0, y: 100 });
+    expect(dragCrop(defaultCrop(), image, 300, 200, 10, 10)).toEqual(defaultCrop());
+  });
+});
 describe("선택한 예시로 로그인 후 돌아가기", () => {
   it("로그인 전후 예시 선택을 유지한다", () => {
     expect(authReturnPath(exampleEditorHref("workshop"))).toBe("/dashboard/editor?example=workshop");

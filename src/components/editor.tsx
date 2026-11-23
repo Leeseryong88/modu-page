@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Check, CheckCircle2, Copy, ExternalLink, Eye, Layers3, Monitor, Palette, Pencil, Save, Smartphone } from "lucide-react";
 import { COLORS, SITE_ORIGIN } from "@/lib/brand";
 import { api, ApiError } from "@/lib/api-client";
-import { contentSchema, fieldStep, publishIssues, slugError, type SiteContent, type SiteRecord, type ValidationIssue } from "@/lib/schema";
+import { contentSchema, fieldStep, publishIssues, slugError, type SiteContent, type SiteRecord, type ValidationIssue, type SiteImage } from "@/lib/schema";
 import { DEFAULT_LAYOUT, SECTION_INFO, SECTION_TEMPLATES, sectionForField, type SiteSection } from "@/lib/section-layouts";
 import { formatDate } from "@/lib/utils";
 import { useSite } from "@/hooks/use-site";
@@ -16,6 +16,11 @@ import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "./ui/dialog";
 import { SiteStarter } from "./site-starter";
 import "./editor.css";
+import "./editor-sidebar.css";
+import { EditorSidebar, type SidebarTab } from "./editor-sidebar";
+import { ImageCropDialog } from "./image-crop-dialog";
+import { defaultCrop, placeImage, type ImageTarget } from "@/lib/image-layout";
+import { mediaUrl } from "@/lib/media";
 
 const REGIONS: SiteSection[] = ["top", "middle", "bottom"];
 function withLayout(content: SiteContent): SiteContent { return { ...content, layout: { ...DEFAULT_LAYOUT, ...content.layout } }; }
@@ -54,6 +59,32 @@ function EditorWorkspace({ initial, exampleName }: { initial: SiteRecord; exampl
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [success, setSuccess] = useState(false);
+  const [sidebarTab, setSidebarTab] = useState<SidebarTab>("templates");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [library, setLibrary] = useState<SiteImage[]>(() => [initial.draft.hero, initial.draft.logo, ...initial.draft.projects.map(p => p.image)].filter((image): image is SiteImage => !!image));
+  const [libraryCursor, setLibraryCursor] = useState<string | null>(null);
+  const [libraryLoading, setLibraryLoading] = useState(false);
+  const [libraryError, setLibraryError] = useState("");
+  const [selectedImage, setSelectedImage] = useState<SiteImage | null>(null);
+  const [cropTarget, setCropTarget] = useState<{ target: ImageTarget; image: SiteImage; ratio: number } | null>(null);
+  const libraryLock = useRef(false);
+  const loadLibrary = useCallback(async (cursor?: string | null) => {
+    if (libraryLock.current) return;
+    libraryLock.current = true; setLibraryLoading(true); setLibraryError("");
+    try {
+      const page = await api<{ images: SiteImage[]; cursor: string | null }>("/api/media" + (cursor ? "?cursor=" + encodeURIComponent(cursor) : ""));
+      setLibrary(old => [...new Map([...old, ...page.images].map(image => [image.id, image])).values()]); setLibraryCursor(page.cursor);
+    } catch (error) { setLibraryError((error as Error).message); }
+    finally { libraryLock.current = false; setLibraryLoading(false); }
+  }, []);
+  useEffect(() => { void loadLibrary(); }, [loadLibrary]);
+  const images = [...new Map([...library, content.hero, content.logo, ...content.projects.map(p => p.image), ...(section ? [draft.hero, draft.logo, ...draft.projects.map(p => p.image)] : [])].filter((image): image is SiteImage => !!image).map(({ id, width, height }) => [id, { id, width, height }])).values()];
+  function chooseImages() { setSidebarTab("images"); setSidebarOpen(true); }
+  function putImage(target: ImageTarget, image: SiteImage) {
+    if (busy || preview || section) return;
+    setContent(c => placeImage(c, target, { ...image, crop: defaultCrop("center", target === "logo" ? "contain" : "cover") }));
+    setSelectedImage(null); setError(""); setNotice(target === "new-project" ? "사진을 추가했어요. 제목·설명을 입력하고 구도를 조절해보세요." : "사진을 넣었어요. ‘구도 조절’을 눌러 위치와 크기를 맞춰보세요.");
+  }
   const returnFocus = useRef<HTMLElement | null>(null);
   const canvas = useRef<HTMLDivElement>(null);
   const dialogBody = useRef<HTMLDivElement>(null);
@@ -62,7 +93,7 @@ function EditorWorkspace({ initial, exampleName }: { initial: SiteRecord; exampl
   const onBusy = useCallback((delta: number) => setUploads(n => n + delta), []);
   useEffect(() => { if (dialogBody.current) dialogBody.current.scrollTop = 0; }, [section, tab]);
   useEffect(() => {
-    if (!dirty && !modalDirty && !uploads) return;
+    if (!dirty && !modalDirty && !uploads && !cropTarget) return;
     const unload = (event: BeforeUnloadEvent) => { event.preventDefault(); };
     const leave = (event: MouseEvent) => {
       const link = (event.target as Element).closest("a");
@@ -71,7 +102,7 @@ function EditorWorkspace({ initial, exampleName }: { initial: SiteRecord; exampl
     };
     window.addEventListener("beforeunload", unload); document.addEventListener("click", leave, true);
     return () => { window.removeEventListener("beforeunload", unload); document.removeEventListener("click", leave, true); };
-  }, [dirty, modalDirty, uploads]);
+  }, [dirty, modalDirty, uploads, cropTarget]);
   useEffect(() => {
     if (!section || tab !== "content" || !focusPath) return;
     const timer = setTimeout(() => {
@@ -83,7 +114,7 @@ function EditorWorkspace({ initial, exampleName }: { initial: SiteRecord; exampl
   }, [section, tab, focusPath]);
   function rememberFocus() { returnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null; }
   function openSection(next: SiteSection, path = "") {
-    if (busy) return;
+    if (busy || uploads) return;
     rememberFocus(); setDraft(content); setModalIssues(issues.filter(i => sectionForField(i.path) === next));
     setFocusPath(path); setTab("content"); setSection(next); setPublishOpen(false); setNotice("");
   }
@@ -127,18 +158,19 @@ function EditorWorkspace({ initial, exampleName }: { initial: SiteRecord; exampl
       <div className="assembly-save-status" role="status"><strong>{busy ? "저장 중…" : uploads ? "사진 등록 중…" : dirty ? "저장할 변경사항이 있어요" : site.savedAt ? "저장 완료" : "첫 홈페이지를 만들어보세요"}</strong>{site.savedAt && <span>마지막 저장 {formatDate(site.savedAt)}</span>}</div>
       <Button variant="outline" size="sm" onClick={() => void save()} disabled={busy || uploads > 0}><Save size={16} />임시저장</Button><Button size="sm" onClick={() => { rememberFocus(); setPublishOpen(true); }} disabled={busy}>공개하기</Button><Link href="/dashboard" className="assembly-exit">관리 화면</Link>
     </div></header>
-    <main id="main" className="assembly-main">
+    <main id="main" className={`assembly-main sidebar-workspace ${preview ? "workspace-preview" : ""}`}>
+      {!preview && <EditorSidebar content={content} ownerId={site.ownerId} tab={sidebarTab} setTab={setSidebarTab} open={sidebarOpen} setOpen={setSidebarOpen} disabled={busy || uploads > 0 || section !== null || cropTarget !== null} images={images} selectedImage={selectedImage} onSelect={setSelectedImage} onUpload={image => setLibrary(old => [image, ...old])} onLayout={layout => { setContent(c => ({ ...c, layout })); setNotice("템플릿을 바꿨어요. 내용과 사진은 유지돼요."); }} onEdit={openSection} onBusy={onBusy} loading={libraryLoading} libraryError={libraryError} hasMore={!!libraryCursor} loadMore={() => void loadLibrary(libraryCursor)} />}
+      <div className="editor-workspace-page">
       {exampleName && <div className="starter-imported" role="status"><CheckCircle2 size={22} /><div><strong>‘{exampleName}’ 예시를 내 초안으로 가져왔어요.</strong><p>사진과 디자인은 준비됐어요. 상단에서 이름과 소개, 중단에서 사진과 활동, 하단에서 연락 방법을 내 정보로 바꿔주세요.</p><button onClick={() => openSection("top", "name")}>내 이름부터 바꾸기</button></div></div>}
-      <div className="assembly-intro"><div><span className="assembly-eyebrow"><Layers3 size={16} />세 부분으로 완성하는 우리 홈페이지</span><h1>누르고, 고르고, 채워보세요.</h1><p>바꾸고 싶은 영역을 누르면 편집창이 열려요. 상단·중단·하단을 내 취향대로 조립해보세요.</p></div><Button variant="outline" onClick={() => { rememberFocus(); setColorOpen(true); }} disabled={busy}><Palette size={17} />전체 색상</Button></div>
-      <nav className="assembly-sections" aria-label="편집할 영역 선택">{REGIONS.map(region => {
-        const missing = pending.filter(issue => sectionForField(issue.path) === region).length;
-        return <button key={region} onClick={() => openSection(region)} disabled={busy} aria-label={`${SECTION_INFO[region].label} 편집`}><span className={`section-stack stack-${region}`} aria-hidden="true"><i /><i /><i /></span><span><strong>{SECTION_INFO[region].label}<span>{SECTION_INFO[region].contents}</span></strong><small>{SECTION_TEMPLATES[region].find(t => t.id === content.layout[region])?.name}</small></span><span className="section-state">{missing ? `${missing}개 입력 필요` : region === "middle" && !content.about && !content.services.length && !content.projects.length ? "선택 영역" : <Check size={17} />}</span><Pencil size={16} className="section-pencil" /></button>;
-      })}</nav>
+      <div className="assembly-intro"><div><span className="assembly-eyebrow"><Layers3 size={16} />세 부분으로 완성하는 우리 홈페이지</span><h1>고르고, 놓고, 나답게.</h1><p>템플릿을 고르고 사진을 원하는 영역에 넣으세요. 사진을 누르면 위치와 크기를 조절할 수 있어요.</p></div><Button variant="outline" onClick={() => { rememberFocus(); setColorOpen(true); }} disabled={busy}><Palette size={17} />전체 색상</Button></div>
       {feedback}{notice && <p className="assembly-feedback" role="status"><Check size={16} />{notice}</p>}
-      <div className="assembly-toolbar"><span>{preview ? "방문자에게 보이는 화면" : "홈페이지에서 바꿀 부분을 눌러보세요"}</span><div className="assembly-tools"><div className="device-switch" role="group" aria-label="화면 크기"><button aria-label="데스크톱 화면" aria-pressed={device === "desktop"} onClick={() => setDevice("desktop")}><Monitor size={18} /></button><button aria-label="모바일 화면" aria-pressed={device === "mobile"} onClick={() => setDevice("mobile")}><Smartphone size={18} /></button></div><Button size="sm" variant={preview ? "default" : "outline"} aria-pressed={preview} onClick={() => setPreview(!preview)}>{preview ? <Pencil size={16} /> : <Eye size={16} />}{preview ? "편집으로 돌아가기" : "미리보기"}</Button></div></div>
-      <div ref={canvas} className={`assembly-canvas ${device} ${preview ? "viewing" : "editing"}`} aria-busy={busy}><div className="assembly-browser"><span aria-hidden="true"><i /><i /><i /></span><span>{content.name || "나"}의 홈페이지</span><span>{preview ? "미리보기" : "편집 중"}</span></div><BusinessTemplate content={section ? draft : content} ownerId={site.ownerId} preview onEditSection={preview ? undefined : openSection} editingDisabled={busy} /></div>
-      <p className="assembly-footnote">영역에 적용한 뒤 임시저장으로 보관하세요. 공개하기를 눌러야 방문자에게 보여요.</p>
+      <div className="assembly-toolbar"><span>{preview ? "방문자에게 보이는 화면" : "사진은 끌어놓고, 글은 내용 편집으로"}</span><div className="assembly-tools"><div className="device-switch" role="group" aria-label="화면 크기"><button aria-label="데스크톱 화면" aria-pressed={device === "desktop"} onClick={() => setDevice("desktop")}><Monitor size={18} /></button><button aria-label="모바일 화면" aria-pressed={device === "mobile"} onClick={() => setDevice("mobile")}><Smartphone size={18} /></button></div><Button size="sm" variant={preview ? "default" : "outline"} aria-pressed={preview} disabled={busy || uploads > 0} onClick={() => setPreview(!preview)}>{preview ? <Pencil size={16} /> : <Eye size={16} />}{preview ? "편집으로 돌아가기" : "미리보기"}</Button></div></div>
+      {selectedImage && !preview && <div className="image-placement-notice" role="status"><img src={mediaUrl(site.ownerId, selectedImage)} alt="선택한 사진" /><span>사진을 넣을 영역을 누르세요.</span><button onClick={() => setSelectedImage(null)}>선택 취소</button></div>}
+      <div ref={canvas} className={`assembly-canvas ${device} ${preview ? "viewing" : "editing"}`} aria-busy={busy}><div className="assembly-browser"><span aria-hidden="true"><i /><i /><i /></span><span>{content.name || "나"}의 홈페이지</span><span>{preview ? "미리보기" : "편집 중"}</span></div><BusinessTemplate content={section ? draft : content} ownerId={site.ownerId} preview onEditSection={preview ? undefined : openSection} editingDisabled={busy} photoEditing={preview ? undefined : { selectedImage, disabled: busy || uploads > 0 || section !== null, resolveImage: id => images.find(image => image.id === id), onPlace: putImage, onChoose: chooseImages, onAdjust: (target, image, ratio) => { rememberFocus(); setCropTarget({ target, image, ratio }); } }} /></div>
+      <p className="assembly-footnote">사진 배치와 구도는 임시저장으로 보관하세요. 공개하기 전까지 기존 홈페이지는 그대로예요.</p>
+      </div>
     </main>
+    {cropTarget && <ImageCropDialog image={cropTarget.image} src={mediaUrl(site.ownerId, cropTarget.image)} ratio={cropTarget.ratio} position={cropTarget.target === "hero" ? content.heroPosition : "center"} logo={cropTarget.target === "logo"} onClose={() => setCropTarget(null)} onApply={crop => { setContent(c => placeImage(c, cropTarget.target, { ...cropTarget.image, crop })); setCropTarget(null); setNotice("사진 구도를 적용했어요. 임시저장을 눌러 보관해주세요."); }} />}
     <Dialog open={section !== null} onOpenChange={open => { if (!open) closeSection(); }}><DialogContent className="section-dialog" onPointerDownOutside={e => e.preventDefault()} onEscapeKeyDown={e => { if (uploads) e.preventDefault(); }} onCloseAutoFocus={e => { e.preventDefault(); if (returnFocus.current?.isConnected) returnFocus.current.focus(); else canvas.current?.querySelector<HTMLButtonElement>(".region-edit-button")?.focus(); }}>
       {section && <><div className="section-dialog-heading"><span className="section-dialog-label">{SECTION_INFO[section].label} 편집</span><DialogTitle>{SECTION_INFO[section].title}</DialogTitle><DialogDescription>{SECTION_INFO[section].description}</DialogDescription></div>
         <div className="section-dialog-tabs" role="tablist" aria-label="영역 편집 방법">{(["content", "template"] as const).map(value => <button key={value} id={`section-${value}-tab`} role="tab" aria-selected={tab === value} aria-controls={`section-${value}-panel`} tabIndex={tab === value ? 0 : -1} onKeyDown={e => { if (["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) { e.preventDefault(); const next = e.key === "Home" ? "content" : e.key === "End" ? "template" : value === "content" ? "template" : "content"; setTab(next); document.getElementById(`section-${next}-tab`)?.focus(); } }} onClick={() => setTab(value)}>{value === "content" ? <><Pencil size={16} />내용 채우기</> : <><Layers3 size={16} />템플릿 고르기<span>4</span></>}</button>)}</div>

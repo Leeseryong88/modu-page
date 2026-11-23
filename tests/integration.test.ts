@@ -62,6 +62,22 @@ async function validContent(owner: string): Promise<SiteContent> {
   return { ...EMPTY_CONTENT, name: "온결인테리어", industry: "인테리어", region: "수원·용인·화성", tagline: "주방과 욕실, 생활에 맞게 새롭게.", phone: "010-0000-0000", hero };
 }
 describe("실제 Firestore 트랜잭션", () => {
+  it("사진 구도를 초안과 공개본에 따로 보존하고 교체한 사진도 보관한다", async () => {
+    const owner = uid(), slug = `crop-${crypto.randomUUID().slice(0, 8)}`;
+    const old = await validContent(owner);
+    const published = await saveSite(owner, old, 0, slug);
+    const crop = { x: 22, y: 70, zoom: 1.8, fit: "contain" as const };
+    const modified = { ...old, hero: { ...old.hero!, crop } };
+    const saved = await saveSite(owner, modified, published.revision);
+    expect((await getSite(owner)).draft.hero?.crop).toEqual(crop);
+    expect((await getPublicSite(slug))?.content.hero).toEqual(old.hero);
+    const next = await saveSite(owner, modified, saved.revision, slug);
+    expect((await getPublicSite(slug))?.content.hero?.crop).toEqual(crop);
+    await saveSite(owner, { ...modified, hero: null }, next.revision);
+    expect((await admin().db.doc(`sites/${owner}/media/${old.hero!.id}`).get()).data()?.library).toBe(true);
+    expect((await getPublicSite(slug))?.content.hero?.crop).toEqual(crop);
+    await expect(saveSite(uid(), modified, 0)).rejects.toThrow("사진 등록");
+  });
   it("개인 포트폴리오를 전화번호와 지역 없이 저장·공개한다", async () => {
     const owner = uid(), slug = `person-${crypto.randomUUID().slice(0, 8)}`;
     const content = { ...await validContent(owner), industry: "이력서·포트폴리오" as const, name: "김하늘", region: "", phone: "", kakao: "" };
