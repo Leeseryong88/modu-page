@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { getExample, type BusinessExample } from "@/lib/examples";
-import { ArrowUpRight, Check, ChevronDown, Globe2, ImagePlus, MessageCircle, Smartphone } from "lucide-react";
+import { ArrowUpRight, Check, ChevronDown, Smartphone } from "lucide-react";
 import { useAuth } from "./auth-provider";
 import { SiteHeader } from "./site-header";
 import { Button } from "./ui/button";
 import { SiteExamples } from "./site-examples";
+import { HomepageBenefits } from "./homepage-benefits";
 import { ExamplePreviewDialog } from "./example-preview-dialog";
 import { CompanyFooter } from "./company-footer";
 import { AssemblyDemo } from "./assembly-demo";
@@ -40,7 +41,7 @@ export function Landing() {
       </div>
       <div className="inclusive-hero-art" aria-label="포트폴리오, 전문가, 클래스 홈페이지 예시"><span className="inclusive-orbit" aria-hidden="true" /><button type="button" onClick={() => openExample(getExample("portfolio")!)} aria-label="김하늘 포트폴리오 예시 크게 보기" className="inclusive-main-card"><div className="inclusive-browser"><i /><i /><i /><span>하늘의 포트폴리오</span></div><img src="/images/use-cases/creative-work.webp" alt="종이와 오브제로 펼쳐낸 디자이너의 창작 작업" width={1440} height={960} fetchPriority="high" /><div><span>DESIGNER · MAKER · EXPLORER</span><h2>작은 발견이,<br />나만의 작업으로.</h2><p>김하늘의 포트폴리오 <ArrowUpRight size={17} /></p></div></button><button type="button" onClick={() => openExample(getExample("professional")!)} aria-label="서윤 세무사 예시 크게 보기" className="inclusive-side-card inclusive-pro"><img src="/images/use-cases/professional.webp" alt="밝은 공간에서 이야기를 나누는 전문가와 상담자" width={600} height={400} /><div><span>전문가 · 상담</span><strong>첫 상담의 시작을<br />편안하게.</strong><ArrowUpRight size={17} /></div></button><button type="button" onClick={() => openExample(getExample("workshop")!)} aria-label="주말의 작업실 예시 크게 보기" className="inclusive-side-card inclusive-class"><img src="/images/use-cases/workshop.webp" alt="종이 공예를 함께 즐기는 클래스 참여자들" width={600} height={400} /><div><span>클래스 · 모임</span><strong>좋아하는 일을,<br />함께하는 시간.</strong><ArrowUpRight size={17} /></div></button><span className="inclusive-art-note"><Check size={14} />서로 다른 이야기, 서로 다른 홈페이지.</span></div>
     </section>
-    <div className="benefit-strip marketing-shell"><p><ImagePlus size={20} /><span>사진과 소개로 <strong>나를 알리고</strong></span></p><p><Globe2 size={20} /><span>하나의 주소로 <strong>쉽게 공유하고</strong></span></p><p><MessageCircle size={20} /><span>문의 양식과 전화로 <strong>기회를 만나세요</strong></span></p></div>
+    <HomepageBenefits onPreview={openExample} />
 
     <SiteExamples onPreview={openExample} />
 
